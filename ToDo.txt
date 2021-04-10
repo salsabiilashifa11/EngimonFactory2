@@ -1,0 +1,46 @@
+I. Translate dari CPP ke Java
+
+1. Engimon
+    - Tambah attribute life
+    - Cumulative experience independent, di awal diinisialisasi 0, cuma bisa nambah
+    - Setiap X turn, engimon liar akan mendapat 100 exp (untuk naik level), levelnya naik 1, experience set jadi 0 abis naik level 
+    -
+
+2. Skill
+    - Mastery level maksimal 3
+
+3. Player
+    - Tampilin list command
+    - Tmabahin detail dari skill item (base power dan elemen)
+    - Ngebuang X amount dari suatu skill item atau engimon
+    - Mengganti nama dari engimon
+    - Save game
+
+    - daftar engimon itu grouped by element, dalam satu grup sorted by level descending
+    - Daftar skill inventory sorted by base power
+    - Player kalah jika engimon abis
+
+4. Battle
+    - Jika power level wild engimon sama dgn player, maka yg menang player
+    - gabisa battle kalo gaada active engimon
+    - Sebelum battle ada option mau proceed atau cancel
+    - Kalo engimon player kalah, bakal kehilangan 1 life
+    - Kalo menang, dapet skill item yang berada di slot pertama engimon musuh
+    - Kalo menang, pas kasi nama kasi throw-exception buat kalo namanya udah ada
+
+5. Breeding
+    - Syarat breeding, level parent ≥ 4
+    - Setelah breeding, level parent -3
+    - Bikin skill buat species yang dual element
+    - 1 skil slot diutamakan untuk skill unik spesies anak
+    - Mastery level gabisa > 3
+
+6. Peta
+    - Lingkungan : Mountains, Sea, Grassland, Tundra
+    - Wild engimon spawned periodically
+    - spawned engimon levelnya harus ≥ level tertinggi dari owned engimon
+
+7. GUI
+    - 
+
+
