@@ -13,6 +13,8 @@ public abstract class Engimon {
     public Engimon(String name, String species, int level) {
         this.name = name;
         this.species = species;
+        this.skills = new ArrayList<Skill>();
+        this.elements = new ArrayList<String>();
         this.life = 3;
         this.level = level;
         this.experience = 0;
