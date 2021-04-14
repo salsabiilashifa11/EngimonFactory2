@@ -10,7 +10,7 @@ public abstract class Engimon {
     protected int experience;
     protected int cumulativeExperience;
 
-    public Engimon(String name, String species, int level) {
+    public Engimon(String name, String species, int life, int level) {
         this.name = name;
         this.species = species;
         this.skills = new ArrayList<Skill>();
