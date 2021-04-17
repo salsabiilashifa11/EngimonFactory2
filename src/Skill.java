@@ -3,10 +3,10 @@ import java.util.ArrayList;
 public class Skill {
     private ArrayList<String> elements;
     private String skillName;
-    private int basePower;
-    private int masteryLevel;
+    private Integer basePower;
+    private Integer masteryLevel;
 
-    public Skill(String skillName, int basePower, int masteryLevel) {
+    public Skill(String skillName, Integer basePower, Integer masteryLevel) {
         this.elements = new ArrayList<String>();
         this.skillName = skillName;
         this.basePower = basePower;
@@ -33,19 +33,19 @@ public class Skill {
         this.skillName = name;
     }
 
-    public int getBasePower() {
+    public Integer getBasePower() {
         return this.basePower;
     }
 
-    public void setBasePower(int basePower) {
+    public void setBasePower(Integer basePower) {
         this.basePower = basePower;
     }
 
-    public int getMasteryLevel() {
+    public Integer getMasteryLevel() {
         return this.masteryLevel;
     }
 
-    public void setMasteryLevel(int masteryLevel) {
+    public void setMasteryLevel(Integer masteryLevel) {
         this.masteryLevel = masteryLevel;
     }
 

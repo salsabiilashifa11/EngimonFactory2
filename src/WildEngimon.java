@@ -27,6 +27,11 @@ public class WildEngimon extends Engimon{
         spesiesSkill = Collections.unmodifiableMap(temp);
     }
 
+    public WildEngimon() {
+        super();
+        this.status = "wild";
+    }
+
     public WildEngimon(String name, String species, int life, int level){
         super(name, species, life, level);
         this.status = "wild";
@@ -98,7 +103,7 @@ public class WildEngimon extends Engimon{
         System.out.println("Skill          : ");
 
         for (int i = 0; i< this.skills.size(); i++){
-            System.out.printf("    " + i+1 + ". ");
+            System.out.println("    " + i+1 + ". ");
             this.skills.get(i).displaySkill();
             System.out.println();
         }

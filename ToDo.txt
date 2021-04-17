@@ -29,11 +29,11 @@ I. Translate dari CPP ke Java
     - Kalo menang, pas kasi nama kasi throw-exception buat kalo namanya udah ada
 
 5. Breeding
-    - Syarat breeding, level parent ≥ 4
-    - Setelah breeding, level parent -3
+    - Syarat breeding, level parent ≥ 4 (clear)
+    - Setelah breeding, level parent -3 (clear)
     - Bikin skill buat species yang dual element
     - 1 skil slot diutamakan untuk skill unik spesies anak
-    - Mastery level gabisa > 3
+    - Mastery level gabisa > 3 (clear)
 
 6. Peta
     - Lingkungan : Mountains, Sea, Grassland, Tundra

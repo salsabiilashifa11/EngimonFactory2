@@ -10,6 +10,17 @@ public abstract class Engimon {
     protected int experience;
     protected int cumulativeExperience;
 
+    public Engimon() {
+        this.name = "XXX";
+        this.species = "none";
+        this.skills = new ArrayList<Skill>();
+        this.elements = new ArrayList<String>();
+        this.life = 3;
+        this.level = 0;
+        this.experience = 0;
+        this.cumulativeExperience = 0;
+    }
+
     public Engimon(String name, String species, int life, int level) {
         this.name = name;
         this.species = species;
@@ -150,9 +161,20 @@ public abstract class Engimon {
         }
     }
 
-    // public Double getStrongestEl(Engimon enemy){
 
-    // }
+     public double getStrongestEl(Engimon enemy) {
+        double strongest = ElementAdvantage.getAdv(this.getElements().get(0),enemy.getElements().get(0));
+         for (int i = 0; i < this.getNElements(); i++) {
+             for (int j = 0; j < enemy.getNElements(); j++) {
+                 double temp = ElementAdvantage.getAdv(this.getElements().get(i), enemy.getElements().get(j));
+                 if (temp > strongest) {
+                     strongest = temp;
+                 }
+             }
+         }
+
+         return strongest;
+     }
 
     void swap(Skill a, Skill b) {
         Skill t = a;

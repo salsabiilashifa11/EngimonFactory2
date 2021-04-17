@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OwnedEngimon extends Engimon{
+public class OwnedEngimon extends Engimon implements Inventoryable {
     private ArrayList<String> parentName;
     private String status;
     private Position position;
@@ -21,6 +21,13 @@ public class OwnedEngimon extends Engimon{
         temp.put("kecoa", "halo saya subur");
 
         percakapan = Collections.unmodifiableMap(temp);
+    }
+
+    public OwnedEngimon(){
+        super();
+        this.status = "owned";
+        this.parentName = new ArrayList<String>(2);
+        this.position = new Position();
     }
 
     public OwnedEngimon(String name, String species, int life, int level){
@@ -49,7 +56,7 @@ public class OwnedEngimon extends Engimon{
     }
 
     public String getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(String status) {
@@ -89,15 +96,15 @@ public class OwnedEngimon extends Engimon{
         System.out.println("Skill                  : ");
 
         for (int i = 0; i< this.skills.size(); i++){
-            System.out.printf("    " + i+1 + ". ");
+            System.out.println("    " + i+1 + ". ");
             this.skills.get(i).displaySkill();
             System.out.println();
         }
-        System.out.printf("Element                : ");
+        System.out.println("Element                : ");
         for (int i = 0; i< this.elements.size(); i++){
-            System.out.printf(i+1 + ". " + this.elements.get(i));
+            System.out.println(i+1 + ". " + this.elements.get(i));
             if (i != this.elements.size() - 1){
-                System.out.printf(" | ");
+                System.out.println(" | ");
             }
         }
         System.out.println();
@@ -112,14 +119,14 @@ public class OwnedEngimon extends Engimon{
     }
 
     public boolean fight(Engimon enemy){
-        float myPower = 0;
-        myPower += enemy.getStrongestEl() * enemy.getLevel();
-        for (int i = 0; i < this.skills.size(); i++) {
+        double myPower = 0;
+        myPower += enemy.getStrongestEl(enemy) * this.getLevel();
+        for (int i = 0; i < this.getNSkill(); i++) {
             myPower += (this.skills.get(i).getBasePower() * this.skills.get(i).getMasteryLevel());
         }
 
-        float enemyPower = 0;
-        enemyPower += enemy.getStrongestEl() * enemy.getLevel();
+        double enemyPower = 0;
+        enemyPower += enemy.getStrongestEl(this) * enemy.getLevel();
         for (int i = 0; i < enemy.getNSkill(); i++) {
             enemyPower += enemy.getSkill().get(i).getBasePower() * enemy.getSkill().get(i).getMasteryLevel();
         }
@@ -127,6 +134,22 @@ public class OwnedEngimon extends Engimon{
         System.out.println("My Power       : " + myPower);
         System.out.println("Enemy Power    : " + enemyPower);
 
-        return myPower > enemyPower;
+        return myPower >= enemyPower;
     }
+
+    public void invDisplay() {
+        System.out.print(getName() + "/");
+        System.out.print(this.getElements().get(0));
+        for (int i = 1; i < this.getElements().size(); i++) {
+            System.out.print(", " + this.getElements().get(i));
+        }
+        System.out.print(getName() + "/");
+        System.out.println("Lv." + getLevel());
+    }
+
+    public int getQuantity() {
+        return 1;
+    }
+
+    public void addQuantity(int n) {}
 }
