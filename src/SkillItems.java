@@ -36,6 +36,6 @@ public class SkillItems implements Inventoryable {
         for (int i = 1; i < this.item_skill.getElement().size(); i++) {
             System.out.print(", " + this.item_skill.getElement().get(i));
         }
-s
+        System.out.println();
     }
 }

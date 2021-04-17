@@ -7,6 +7,8 @@ import static java.lang.Math.max;
 
 public class Player {
 //    Fields
+    public final static int MAX_EL = 15;
+    public final static int MAX_EXP = 20150;
     private String name;
     private Position playerPos;
     private OwnedEngimon active;
@@ -367,9 +369,9 @@ public class Player {
     }
 
 //    Getter Setter
-//    public OwnedEngimon getActiveEngimon(){
-//
-//    }
+    public OwnedEngimon getActiveEngimon(){
+        return active;
+    }
 
     public String getName(){
         return name;
@@ -384,14 +386,16 @@ public class Player {
     }
 
     public void activeMati(){
-        try{
+        /*try{
             playerEngimons.n_elmt() == 1;
         } catch {
             System.out.println("Kamu ga punya engimon");
-        }
+        }*/
+
+        //bikin class baru EngimonException extends Exception
 
         if (playerEngimons.n_elmt() == 1) {
-            throw new EngimonException("Kamu ga punya engimon");
+//            throw new EngimonException("Kamu ga punya engimon");
         }
         else{
             int activeIndex = playerEngimons.indexByName(active.getName());
@@ -413,13 +417,13 @@ public class Player {
         playerPos.setY(_y);
     }
 
-//    public void addToInventory(OwnedEngimon el){
-//
-//    }
+    public void addToInventory(OwnedEngimon el){
+        this.playerEngimons.append(el);
+    }
 
-//    public void addToInventory(SkillItems el){
-//
-//    }
+    public void addToInventory(SkillItems el){
+        this.playerItems.append(el);
+    }
 
     public void showInventory(){
         System.out.println("Engimon: ");
@@ -438,12 +442,36 @@ public class Player {
         playerEngimons.displayAll();
     }
 
-    public void useSkillItems(){
-
+    public SkillItems generateSkillItem(String tnemele){
+        if (tnemele == "water"){
+            Skill s = new Skill("Tenggelam di lautan cinta",100,1);
+            SkillItems sk = new SkillItems(s,1);
+            return sk;
+        }
+        else if (tnemele == "fire"){
+            Skill s = new Skill("Tersundut gudang garam filter",100,1);
+            SkillItems sk = new SkillItems(s,1);
+            return sk;
+        }
+        else if (tnemele == "ice"){
+            Skill s = new Skill("Bertapa di gunung es",100,1);
+            SkillItems sk = new SkillItems(s,1);
+            return sk;
+        }
+        else if (tnemele == "electric"){
+            Skill s = new Skill("Berjoget di atas sutet", 100, 1);
+            SkillItems sk = new SkillItems(s,1);
+            return sk;
+        }
+        else if (tnemele == "ground"){
+            Skill s = new Skill("Rajaman perselingkuh",100,1);
+            SkillItems sk = new SkillItems(s,1);
+            return sk;
+        } else {
+            Skill s = new Skill("XXX",0,-1);
+            SkillItems sk = new SkillItems(s,0);
+            return sk;
+        }
     }
-
-//    public SkillItems generateSkillItem(string _skill){
-//
-//    }
 
 }

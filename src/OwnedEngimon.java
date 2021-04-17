@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OwnedEngimon extends Engimon implements Inventoryable {
+public class    OwnedEngimon extends Engimon implements Inventoryable {
     private ArrayList<String> parentName;
     private String status;
     private Position position;
@@ -143,7 +143,7 @@ public class OwnedEngimon extends Engimon implements Inventoryable {
         for (int i = 1; i < this.getElements().size(); i++) {
             System.out.print(", " + this.getElements().get(i));
         }
-        System.out.print(getName() + "/");
+        System.out.print("/");
         System.out.println("Lv." + getLevel());
     }
 

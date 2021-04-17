@@ -69,19 +69,19 @@ public class Map {
     }
 
     public void updatePlayer(){
-        Player tempP;
+        Player tempP = player;
         Engimon tempE = new WildEngimon();
 
         for (int i = 0; i < height; i++){
             for (int j = 0; j < width; j++){
                 map[i][j].setPlayer(tempP);
-                map[i][j].setPlayer(tempE);
+                map[i][j].setEngimon(tempE);
             }
         }
 
         map[player.getPosition().getX()][player.getPosition().getY()].setPlayer(player);
         map[player.getActiveEngimon().getPosition().getX()][player.getActiveEngimon().getPosition().getY()]
-                .setEngimon(&player.getActiveEngimon());
+                .setEngimon(player.getActiveEngimon());
     }
 
     public Cell getEnemy() {

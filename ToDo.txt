@@ -11,13 +11,13 @@ I. Translate dari CPP ke Java
 
 3. Player
     - Tampilin list command
-    - Tmabahin detail dari skill item (base power dan elemen)
+    - Tmabahin detail dari skill item (base power dan elemen) (clear)
     - Ngebuang X amount dari suatu skill item atau engimon
     - Mengganti nama dari engimon
     - Save game
 
-    - daftar engimon itu grouped by element, dalam satu grup sorted by level descending
-    - Daftar skill inventory sorted by base power
+    - daftar engimon itu grouped by element, dalam satu grup sorted by level descending (clear)
+    - Daftar skill inventory sorted by base power (clear)
     - Player kalah jika engimon abis
 
 4. Battle
@@ -43,6 +43,10 @@ I. Translate dari CPP ke Java
 7. GUI
     - 
 
-
+========================================================================================
+NEW FILE
+1. Exception
+    - Player.java
+      - activeMati --> jika player gapunya engimon
 
 
