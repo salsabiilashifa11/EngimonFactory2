@@ -1,53 +1,36 @@
 package GUI;
 
+import Game.Cell;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.Scanner;
 
 public class Map {
 
     //Fields
-    private Scanner m;
-    private String Map[] = new String[14];
-
-    private Image grass, sea, flower;
+    private Scanner m; //File textnya
+    private String chars[] = new String[20]; //String input per line dari m
+    private Cell matrix[][] = new Cell[20][20]; //Map matrix
 
     //Constructor
     public Map() {
-
-        ImageIcon img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/Grass.png");
-        grass = img.getImage();
-        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/Sea.png");
-        sea = img.getImage();
-        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/Flower.png");
-        flower = img.getImage();
-
         openFile();
         readFile();
         closeFile();
+        chars2Map();
     }
 
     //Methods
-    public Image getSea() {
-        return sea;
-    }
-    public Image getGrass() {
-        return grass;
-    }
-    public Image getFlower() {
-        return flower;
-    }
-
-    public String getMap(int x, int y) {
+    public Cell getCell(int x, int y) {
         //This basically gets a tile from map in position x,y
-        String index = Map[y].substring(x, x+1);
-        return index;
+        return matrix[x][y];
     }
 
     public void openFile() {
-
         try {
             m = new Scanner(new File("/Users/shifa/Desktop/MapLagi/map/map.txt"));
         } catch (FileNotFoundException e) {
@@ -57,13 +40,22 @@ public class Map {
 
     public void readFile() {
         while (m.hasNext()) {
-            for (int i = 0; i < 14; i++) {
-                Map[i] = m.next();
+            for (int i = 0; i < 20; i++) {
+                chars[i] = m.next();
             }
         }
     }
 
     public void closeFile() {
         m.close();
+    }
+
+    public void chars2Map() {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                Cell tile = new Cell(j, i, chars[i].substring(j, j+1).charAt(0));
+                matrix[i][j] = tile;
+            }
+        }
     }
 }
