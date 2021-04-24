@@ -101,23 +101,28 @@ public class TestMainGame {
         while (status) {
             String command = consoleInput.getLastInput();
 //                System.out.println(command);
-            System.out.println(consoleOutput.getLine1());
+            //System.out.println(consoleOutput.getLine1());
             if (command.equals("help")) {
+                consoleOutput.setLine1("HELP");
+                consoleOutput.setLine2("display   : Display player inventorys");
+                consoleOutput.setLine3("battle    : Battle with wild engimon");
+                consoleOutput.setLine4("breed     : Breed 2 owned engimons");
+                consoleOutput.setLine5("change    : Change active engimon");
+                consoleOutput.setLine6("detail    : Display Engimon's detail");
+                consoleOutput.setLine7("          : information");
+                consoleOutput.setLine8("learn     : Teach engimon a skill");
+                consoleOutput.setLine9("display   : Display player inventorys");
+                consoleOutput.setLine10("interact  : Interact with current active");
+                consoleOutput.setLine11("          : engimon");
+                consoleOutput.setLine12("quit      : Exit game");
 
-                consoleOutput.setLine1("TESTTTTT");
-//                    System.out.println("w/a/s/d     : Move character");
-//                    System.out.println("display     : Display player inventory");
-//                    System.out.println("battle      : Battle with wild engimon");
-//                    System.out.println("breed       : Breed 2 owned engimons");
-//                    System.out.println("change      : Change active engimon");
-//                    System.out.println("detail      : Display Engimon's detail information");
-//                    System.out.println("learn       : Teach engimon a skill");
-//                    System.out.println("interact    : Interact with current active engimon");
-//                    System.out.println("quit        : Exit game");
             } else {
-                //do nothing, re-enter loop
+                consoleOutput.setLine1("Input Salah");
             }
             System.out.println(consoleOutput.getLine1());
+//            consoleOutput.setLine1("TESTTTTT");
+//            consoleOutput.setLine1("Test please print");
+//            System.out.println(consoleOutput.getLine1());
 
 //                switch (command) {
 //                    case ("quit"):
