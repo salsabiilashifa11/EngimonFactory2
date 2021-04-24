@@ -2,19 +2,22 @@ package Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OwnedEngimon extends Engimon implements Inventoryable {
+public class OwnedEngimon extends Engimon implements Inventoryable, Serializable {
     private ArrayList<String> parentName;
     private Position position;
     private static final Map<String, String> percakapan;
 
     //Buat GUI
-    private Image activeActive;
-    private Image activeFront, activeLeft, activeRight, activeBack;
+    private transient Image activeActive;
+    private transient Image activeFront, activeLeft, activeRight, activeBack;
 
 
     static {
@@ -71,8 +74,8 @@ public class OwnedEngimon extends Engimon implements Inventoryable {
     }
 
     public void setParentName(String parentName1, String parentName2) {
-        this.parentName.set(0,parentName1);
-        this.parentName.set(1,parentName2);
+        this.parentName.add(parentName1);
+        this.parentName.add(parentName2);
     }
 
     public String getStatus() {
@@ -116,23 +119,26 @@ public class OwnedEngimon extends Engimon implements Inventoryable {
         System.out.println("Skill                  : ");
 
         for (int i = 0; i< this.skills.size(); i++){
-            System.out.println("    " + i+1 + ". ");
+            System.out.println("    " + (i+1) + ". ");
             this.skills.get(i).displaySkill();
             System.out.println();
         }
         System.out.println("Element                : ");
         for (int i = 0; i< this.elements.size(); i++){
-            System.out.println(i+1 + ". " + this.elements.get(i));
-            if (i != this.elements.size() - 1){
-                System.out.println(" | ");
-            }
+                if (i != this.elements.size() - 1){
+                System.out.print(" | ");
+                }
+                else{
+                    System.out.println((i+1) + ". " + this.elements.get(i));
+                }
         }
         System.out.println();
         System.out.println("Level                  : " + this.level);
+        System.out.println("Life                   : " + this.life);
         System.out.println("Experience             : " + this.experience);
         System.out.println("Cumulative Experience  : " + this.cumulativeExperience);
-        System.out.println("Abi                    : " + this.getParentName().get(0));
-        System.out.println("Mami                   : " + this.getParentName().get(1));
+        System.out.println("Abi                    : " + ((this.getParentName().size() == 0) ? "N/A" :this.getParentName().get(0)));
+        System.out.println("Mami                   : " + ((this.getParentName().size() == 0) ? "N/A" :this.getParentName().get(1)));
         System.out.println("Status                 : " + this.getStatus());
         System.out.println("=======================================================");
 
@@ -188,4 +194,20 @@ public class OwnedEngimon extends Engimon implements Inventoryable {
     public Image getActiveBack() { return activeBack; }
     public Image getActiveLeft() { return activeLeft; }
     public Image getActiveRight() { return activeRight; }
+
+    private void readObject(ObjectInputStream ois)
+            throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+
+        //Loading active engimon sprites
+        ImageIcon img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/OwnedFront.png");
+        activeFront = img.getImage();
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/OwnedLeft.png");
+        activeLeft = img.getImage();
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/OwnedRight.png");
+        activeRight = img.getImage();
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/OwnedBack.png");
+        activeBack = img.getImage();
+        activeActive = activeFront;
+    }
 }

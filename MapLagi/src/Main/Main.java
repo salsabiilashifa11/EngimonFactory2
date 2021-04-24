@@ -23,10 +23,10 @@ public class Main {
         board.setBounds(0,0,640,668);
 
         consoleOutput = new ConsoleOutput(board);
-        consoleOutput.setBounds(640,0,360,334);
+        consoleOutput.setBounds(640,0,460,450);
 
         consoleInput = new ConsoleInput(board, consoleOutput);
-        consoleInput.setBounds(640, 334, 360, 334);
+        consoleInput.setBounds(640, 450, 460, 218);
 
         JFrame frame = new JFrame();
         frame.setLayout(null);
@@ -34,13 +34,14 @@ public class Main {
         frame.add(board);
         frame.add(consoleInput);
         frame.add(consoleOutput);
-        frame.setSize(1000,668); //adjust later header size = 28px
+        frame.setSize(1100,668); //adjust later header size = 28px
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         TestMainGame game = new TestMainGame(consoleOutput, consoleInput, board);
+
     }
 
 }

@@ -1,11 +1,13 @@
 package Game;
 
 import java.io.Serializable;
-
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
 
-public class Cell {
+
+public class Cell implements Serializable {
 
     //Fields
     private int x;
@@ -14,8 +16,10 @@ public class Cell {
     private Player occupierP;
     private Engimon occupierE;
 
+
     //For GUI
-    private Image cellTile;
+    private transient Image cellTile;
+    private char cellCode;
 
     //Constructor
     public Cell(int _x, int _y, char _char) {
@@ -38,6 +42,7 @@ public class Cell {
     public void setPlayer(Player p) { occupierP = p; }
     public void setEngimon(Engimon e) { occupierE = e; }
     public void setCellTile(char _char) {
+        this.cellCode = _char;
         ImageIcon img;
         switch (_char) {
             case 'f':
@@ -127,7 +132,12 @@ public class Cell {
 
     //GUI
     public void drawCell(Graphics g) {
-        g.drawImage(cellTile, x*32, y*32, null);
+        g.drawImage(cellTile, x * 32, y * 32, null);
     }
 
+    private void readObject(ObjectInputStream ois)
+        throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+        setCellTile(this.cellCode);
+    }
 }

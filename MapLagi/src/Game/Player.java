@@ -6,10 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Scanner;
 import java.io.Serializable;
-
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import static java.lang.Math.max;
 
-public class Player {
+public class Player implements Serializable {
 
     //Fields
     private String name;
@@ -22,8 +23,8 @@ public class Player {
     // GUI
     private Position position; //Tile positions (single increments)
     private int x, y; //for GUI drawing positions
-    private Image playerActive;
-    private Image playerFront, playerLeft, playerRight, playerBack;
+    private transient Image playerActive;
+    private transient Image playerFront, playerLeft, playerRight, playerBack;
 
     //Constructor
     public Player(String _name, Map _map) {
@@ -37,6 +38,8 @@ public class Player {
         this.initiateSkill();
         this.setActiveEngimon(0);
         active.setPosition(1,2);
+        map.getCell(position.getX(), position.getY()).setPlayer(this);
+        map.getCell(1, 2).setEngimon(active);
 
         //For GUI - loading all player sprites
 
@@ -162,24 +165,10 @@ public class Player {
         }
     }
 
-    public void changeActiveEngimon(int idxEngimon) { // Ambil input di MAIN
-        int i;
-        System.out.println("Pilih Nomor Engimon yang Akan Jadi Active: ");
-        for (i = 0; i < playerEngimons.get(i).getNElements(); i++) {
-            System.out.print((i + 1) + ". " + playerEngimons.get(i).getName() + " ");
-            if (playerEngimons.get(i).getName().equals(active.getName())) {
-                System.out.print("(active)");
-            }
-            System.out.println();
-        }
-        // harusnya minta input dari text field
-        Scanner scanner = new Scanner(System.in);
-        scanner.close();
-        int input = scanner.nextInt();
-
+    public void changeActiveEngimon(int idxEngimon) {
         playerEngimons.get(idxEngimon-1).setPosition(active.getPosition().getX(), active.getPosition().getY());
         active.setPosition(-1,-1);
-        setActiveEngimon(input-1);
+        setActiveEngimon(idxEngimon-1);
     }
 //
     public void breed(Engimon father, Engimon mother, String namaAnak){ // Ambil nama anak di MAIN
@@ -328,7 +317,6 @@ public class Player {
         //Set musuh jadi mati
         enemy.setStatus("dead");
         //Nambahin exp
-        int activeIndex = playerEngimons.indexByName(active.getName());
         active.increaseXP(50);
         if (active.getCumulativeExperience() >= MAX_EXP) {
             this.activeMati();
@@ -345,6 +333,7 @@ public class Player {
             baru.addSkill(enemy.getSkill().get(i));
         }
         addToInventory(baru);
+        System.out.println("Berhasil nambahin engimon ke inventory");
 
         //Nambahin skill items
         if (playerEngimons.n_elmt() + playerItems.n_elmt() >= MAX_EL) {
@@ -353,95 +342,26 @@ public class Player {
         if (enemy.getNSkill() > 0) {
             this.addToInventory(generateSkillItem(enemy.getElements().get(0)));
         }
+        System.out.println("Berhasil nambahin skill items ke inventory");
+        map.getCell(enemy.getPosition().getX(), enemy.getPosition().getY()).setEngimon(null);
+        enemy = null;
     }
 
-//    public void battle(Engimon enemy, String name){
-//        if (active == null) {
-//            System.out.println("Gaada active engimon be**go");
-//        }
-//        else {
-//            System.out.println("                    Player's Engimon                   ");
-//            active.displayDetail();
-//            System.out.println("=======================================================");
-//            System.out.println("                          Enemy                        ");
-//            enemy.displayDetail();
-//            System.out.println("=======================================================");
-//            System.out.println("                 Proceed battle? (y/n)                ");
-//            Scanner scanner = new Scanner(System.in);
-//            String input = scanner.next();
-//            if (input.equals("y") || input.equals("Y")) {
-//                Boolean win = active.fight(enemy);
-//                if (!win) {
-//                    System.out.println("Kalah battle");
-//                    int temp = active.getLife();
-//                    active.setLife(temp - 1);
-//                    if (active.getLife() <= 0) {
-//                        this.activeMati();
-//                    }
-//                } else {
-//                    System.out.println("Kamu memenangkan battle");
-//                    System.out.println("=======================================================");
-//                    //Set musuh jadi mati
-//                    enemy.setStatus("dead");
-//                    //Nambahin exp
-//                    int activeIndex = playerEngimons.indexByName(active.getName());
-//                    active.increaseXP(50);
-//                    //playerEngimons[activeIndex] = active; C++
-//                    //playerEngimons.get(activeIndex) = active; Java error
-//                    if (active.getCumulativeExperience() >= MAX_EXP) {
-//                        this.activeMati();
-//                    }
-//                    if (playerEngimons.n_elmt() + playerItems.n_elmt() >= MAX_EL) {
-//                        System.out.println("Inventory penuh");
-//                        return;
-//                    }
-//                    //Nambahin engimon
-//                    OwnedEngimon baru = new OwnedEngimon();
-//                    baru.setParentName("", "");
-//
-//                    String nama;
-//                    System.out.print("Masukkan nama  : ");
-//                    Scanner scanner1 = new Scanner(System.in);
-//                    nama = scanner1.next();
-//                    baru.setName(nama);
-//
-//                    baru.setSpecies(enemy.getSpecies());
-//                    baru.addElements(enemy.getElements().get(0));
-//                    for (int i = 0; i < enemy.getNSkill(); i++) {
-//                        baru.addSkill(enemy.getSkill().get(i));
-//                    }
-//                    baru.setLevel(enemy.getLevel());
-//                    baru.setExperience(enemy.getExperience());
-//                    baru.setCumulativeExperience(enemy.getCumulativeExperience());
-//                    //addToInventory(baru);
-//
-//                    //Nambahin skill items
-//                    if (playerEngimons.n_elmt() + playerItems.n_elmt() >= MAX_EL) {
-//                        System.out.println("Inventory penuh");
-//                    }
-//                    if (enemy.getNSkill() > 0) {
-//                        //this.addToInventory(generateSkillItem(enemy.getElements().get(0)));
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-    public void teach(String skillName, String eName){
+    public Boolean teachAble(String skillName, String eName) {
         Skill newSkill = playerItems.get(playerItems.indexByName(skillName)).getSkill();
         boolean kompatibel = false;
 
         for (int i = 0; i < playerEngimons.get(playerEngimons.indexByName(eName)).getNSkill(); i++) {
             if (playerEngimons.get(playerEngimons.indexByName(eName)).getSkill().get(i).getSkillName().equals(newSkill.getSkillName())) {
                 System.out.println("Engimon sudah punya skill tersebut");
-                return;
+                return false;
             }
         }
 
         for (int i = 0; i < playerEngimons.get(playerEngimons.indexByName(eName)).getNElements(); i++) {
             for (int j = 0; j < newSkill.getNElementSkill(); j++) {
                 //harus pake equals?
-                if (newSkill.getElement().get(j).equals(playerEngimons.get(playerEngimons.indexByName(eName)).getElements().get(i))){
+                if (newSkill.getElement().get(j).equals(playerEngimons.get(playerEngimons.indexByName(eName)).getElements().get(i))) {
                     kompatibel = true;
                 }
             }
@@ -449,35 +369,13 @@ public class Player {
 
         if (!kompatibel) {
             System.out.println("Skill item tidak kompatibel");
-            return;
+            return false;
         }
+        return kompatibel;
+    }
 
-        if (playerEngimons.get(playerEngimons.indexByName(eName)).getNSkill() == 4) {
-            System.out.println("Skill engimon penuh, mau tukar dengan skill item? (y/n): ");
-            String choice;
-            //cin string
-            Scanner scanner2 = new Scanner(System.in);
-            choice = scanner2.next();
-
-            if (choice.equals("y") || choice.equals("Y") || choice.equals("yes")) {
-                System.out.println("Skill engimon: ");
-                for (int i = 0; i < 4; i++) {
-                    System.out.println((i+1) + ". " + playerEngimons.get(playerEngimons.indexByName(eName)).getSkill().get(i).getSkillName());
-                }
-                System.out.print("Masukkan nomor skill yang mau ditukar: ");
-                int idx;
-                Scanner scanner3 = new Scanner(System.in);
-                idx = scanner3.nextInt();
-                //playerEngimons[playerEngimons.indexByName(eName)].getSkill()[idx] = newSkill; C++
-                //playerEngimons.get(playerEngimons.indexByName(eName)).getSkill().get(idx) = newSkill;
-                playerItems.deleteAt(playerItems.indexByName(skillName));
-                return;
-            }
-            else {
-                System.out.println("Gajadi learn");
-                return;
-            }
-        }
+    public void teach(String skillName, String eName){
+        Skill newSkill = playerItems.get(playerItems.indexByName(skillName)).getSkill();
         playerEngimons.get(playerEngimons.indexByName(eName)).addSkill(newSkill);
         playerItems.deleteAt(playerItems.indexByName(skillName));
     }
@@ -485,36 +383,22 @@ public class Player {
     public void displayEngimon(String _name){
         playerEngimons.get(playerEngimons.indexByName(_name)).displayDetail();
     }
-//
-//    public void executeBreed(String Abi, String Mami, String namaAnak) { //AMBIL NAMA DI MAIN
-//        //angka 15 dan 30 nya belom diganti
-//        if (playerEngimons.n_elmt() + playerItems.n_elmt() < 15){ //
-//            for (int i=0; i<playerEngimons.n_elmt(); i++){
-//                if (playerEngimons.get(i).getLevel() >= 30){
-//                    System.out.println(i+1 + ". " + playerEngimons.get(i).getName() + " ");
-//                }
-//            }
-////            System.out.println("Pilih Abi :" );
-////            //String Abi;
-////            // harusnya minta input dari text field
-////            Scanner scanner = new Scanner(System.in);
-////            Abi = scanner.next();
-////            scanner.close();
-////
-////            System.out.println("Pilih Mami:" );
-////            //String Mami;
-////            // harusnya minta input dari text field
-////            Scanner scanner1 = new Scanner(System.in);
-////            Mami = scanner1.next();
-////            scanner1.close();
-//
-//            breed(playerEngimons.get(playerEngimons.indexByName(Abi)), playerEngimons.get(playerEngimons.indexByName(Mami)), namaAnak);
-//        }
-//        else
-//        {
-//            System.out.println("Inventory penuh, gabisa breed");
-//        }
-//    }
+
+
+
+    public Boolean checkBreed(){
+        if (playerEngimons.n_elmt() + playerItems.n_elmt() < 15){ //
+            for (int i=0; i<playerEngimons.n_elmt(); i++) {
+                if (playerEngimons.get(i).getLevel() >= 30) {
+                    System.out.println(i + 1 + ". " + playerEngimons.get(i).getName() + " ");
+                }
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 //
     public void setActiveEngimon(int _index){
         active = this.playerEngimons.get(_index);
@@ -553,8 +437,7 @@ public class Player {
     public void addToInventory(OwnedEngimon el){
         this.playerEngimons.append(el);
     }
-
-    public void addToInventory(SkillItems el){
+    public void addToInventory(SkillItems el) {
         this.playerItems.append(el);
     }
 
@@ -565,10 +448,10 @@ public class Player {
         playerItems.displayAll();
     }
 //
-    public void showItems(){
-        System.out.println("Skill items: ");
-        playerItems.displayAll();
-    }
+//    public void showItems(){
+//        System.out.println("Skill items: ");
+//        playerItems.displayAll();
+//    }
 //
 //    public void showEngimons(){
 //        System.out.println("Engimon: ");
@@ -695,20 +578,32 @@ public class Player {
         return null;
     }
 
-    public void executeBattle() {
-        System.out.println("BATTLE");
-        if (getEnemy() == null) {
-            System.out.println("Ga ada musuh");
-        }
-        else {
-            Boolean menang = battle(getEnemy().getEngimon());
-            if (menang){
-                winBattle(getEnemy().getEngimon(), "Bambang");
-            }
-            else{
-                System.out.println("Lu kalah ta**i");
-            }
-        }
+//    public void executeBattle(String name){
+//
+//
+//                Boolean menang = battle(getEnemy().getEngimon());
+//            if (menang){
+//                winBattle(getEnemy().getEngimon(), "Bambang");
+//            }
+//            else{
+//                System.out.println("Lu kalah ta**i");
+//            }
+//
+//    }
+
+    private void readObject(ObjectInputStream ois)
+        throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+
+        //Loading player sprites
+        ImageIcon img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/PlayerFront.png");
+        playerFront = img.getImage();
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/PlayerLeft.png");
+        playerLeft = img.getImage();
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/PlayerRight.png");
+        playerRight = img.getImage();
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/PlayerBack.png");
+        playerBack = img.getImage();
+        playerActive = playerFront;
     }
-    
 }

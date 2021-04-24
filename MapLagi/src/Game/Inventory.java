@@ -82,7 +82,7 @@ public class Inventory <T extends Inventoryable & Serializable> implements Seria
         }
         else {
             for (int i = 0; i < container.size(); i++) {
-                System.out.print(i+1 + ". ");
+                System.out.print((i+1) + ". ");
                 container.get(i).invDisplay();
             }
         }

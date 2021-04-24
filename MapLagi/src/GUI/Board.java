@@ -12,7 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
-public class Board extends JPanel implements ActionListener {
+public class Board extends JPanel implements ActionListener, Serializable {
 
     //Fields
     private Timer timer; //to continuously listen for actions

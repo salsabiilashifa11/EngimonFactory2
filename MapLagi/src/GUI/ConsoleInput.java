@@ -9,6 +9,7 @@ public class ConsoleInput extends JPanel implements ActionListener {
     //Fields
     public static JTextField inputField;
     public static JButton enterButton;
+    public static JButton nextButton;
     private Board board;
     private ConsoleOutput consoleOutput;
     private String lastInput;
@@ -19,22 +20,29 @@ public class ConsoleInput extends JPanel implements ActionListener {
         consoleOutput = _consoleOutput;
 
         inputField = new JTextField();
-        lastInput = " ";
+        lastInput = "";
         inputField.setBounds(20, 20, 250, 30);
 
         enterButton = new JButton("enter");
         enterButton.setBounds(20, 60, 100, 30);
 
+        nextButton = new JButton("Next");
+        nextButton.setBounds(110, 60, 100, 30);
+
         //Adding components to panel
         this.setLayout(null);
         this.add(inputField);
         this.add(enterButton);
-        enterButton.addActionListener(this::actionPerformed);
+        this.add(nextButton);
+        //enterButton.addActionListener(this::actionPerformed);
+
     }
 
     //Aksesor
     public String getLastInput() { return lastInput; }
-
+    public JTextField getInputField() { return inputField;}
+    public JButton getEnterButton() { return enterButton; }
+    public JButton getNextButton() { return nextButton; }
     //Methods
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -44,6 +52,7 @@ public class ConsoleInput extends JPanel implements ActionListener {
             System.out.println(inputField.getText());
             inputField.setText("");
             giveFocus();
+            System.out.println("LastInput is: " + lastInput);
         }
     }
 

@@ -5,15 +5,19 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import GUI.Map;
 
 import javax.swing.*;
 
-public class WildEngimon extends Engimon{
+public class WildEngimon extends Engimon implements Serializable {
     private Position position;
     private Timer timer = new Timer();
-
+    private Map map;
+    //FOR GUI
+    private transient Image wildImage;
 //    private Integer element2int(String element) {
 //        if (element.equals("fire") || element.equals("ground") || element.equals("electric") ){
 //            return 1;
@@ -33,8 +37,7 @@ public class WildEngimon extends Engimon{
 
     }
 
-    //FOR GUI
-    private Image wildImage;
+
 
 //    public WildEngimon() {
 //        super();
@@ -91,9 +94,7 @@ public class WildEngimon extends Engimon{
         this.position = new Position();
         this.setPosition(_x,_y,_m);
 
-        //Loading active engimon sprites
-        ImageIcon img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/WildEngimonRed.png");
-        wildImage = img.getImage();
+        loadImage();
 
         TimerTask myTask = new TimerTask() {
             @Override
@@ -103,11 +104,19 @@ public class WildEngimon extends Engimon{
         };
 
         timer.schedule(myTask, 0, 5000);
+        map = _m;
+    }
+
+    private void loadImage() {
+        //Loading active engimon sprites
+        ImageIcon img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/WildEngimonRed.png");
+        wildImage = img.getImage();
     }
 
     public String getStatus(){
         return this.status;
     }
+    public Timer getTimer() { return timer; }
 
     public void setStatus(String status) {
         this.status = status;
@@ -220,10 +229,31 @@ public class WildEngimon extends Engimon{
         }
     }
 
+    public void stopTimer() {
+        timer.cancel();
+    }
+
+    public void resumeTimer() {
+        timer = new Timer();
+        TimerTask myTask = new TimerTask() {
+            @Override
+            public void run() {
+                move(map);
+            }
+        };
+        timer.schedule(myTask, 0, 5000);
+    }
+
     //For GUI - Drawing the Engimon
     @Override
     public void drawEngimon(Graphics g) {
         g.drawImage(wildImage, position.getY()*32, position.getX()*32, null);
+    }
+
+    private void readObject(ObjectInputStream ois)
+            throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+        loadImage();
     }
 
 }

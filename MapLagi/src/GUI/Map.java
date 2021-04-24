@@ -9,10 +9,10 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.Scanner;
 
-public class Map {
+public class Map implements Serializable {
 
     //Fields
-    private Scanner m; //File textnya
+    private transient Scanner m; //File textnya
     private String chars[] = new String[20]; //String input per line dari m
     private Cell matrix[][] = new Cell[20][20]; //Map matrix
 

@@ -71,9 +71,10 @@ public class Skill implements Serializable {
         System.out.println("MasteryLevel    : " + this.masteryLevel);
         System.out.println("Elements        : ");
         for (int i = 0; i < this.elements.size(); i++) {
-            System.out.println(this.elements.get(i) + " | ");
             if (i == this.elements.size() - 1) {
                 System.out.println(this.elements.get(i));
+            }else{
+                System.out.print(this.elements.get(i) + " | ");
             }
         }
     }
