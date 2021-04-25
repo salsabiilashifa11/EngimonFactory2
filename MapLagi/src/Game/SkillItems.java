@@ -1,6 +1,7 @@
 package Game;
 
 import java.io.Serializable;
+import java.awt.Image;
 
 public class SkillItems implements Inventoryable, Serializable {
     private Skill item_skill;
@@ -40,5 +41,9 @@ public class SkillItems implements Inventoryable, Serializable {
             System.out.print(", " + this.item_skill.getElement().get(i));
         }
         System.out.println();
+    }
+
+    public Image getInvIcon() {
+        return item_skill.getSkillImage();
     }
 }

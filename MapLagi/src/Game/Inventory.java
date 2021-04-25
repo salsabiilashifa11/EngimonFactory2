@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.reverseOrder;
+import java.awt.Graphics;
 import java.io.Serializable;
 
 public class Inventory <T extends Inventoryable & Serializable> implements Serializable {
@@ -98,4 +99,9 @@ public class Inventory <T extends Inventoryable & Serializable> implements Seria
         return -1;
     }
 
+    public void drawInventory(Graphics g, int y) {
+        for (int i = 0; i < container.size(); i++) {
+            g.drawImage(container.get(i).getInvIcon(), (i+1)*32, y, null);
+        }
+    }
 }

@@ -43,6 +43,7 @@ public class ConsoleOutput extends JPanel implements ActionListener {
         this.setLayout(null);
         scrollableTextArea = new JScrollPane(textArea);
         scrollableTextArea.setBounds(20,50,400,400);
+        scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         this.add(scrollableTextArea);
         this.setFocusable(false);
     }

@@ -222,4 +222,6 @@ public abstract class Engimon implements Serializable {
     public abstract void move(Map map);
 
     public abstract Position getPosition();
+
+    public abstract void drawEngimonSmall(Graphics g);
 }

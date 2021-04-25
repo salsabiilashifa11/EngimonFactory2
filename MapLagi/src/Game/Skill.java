@@ -1,21 +1,69 @@
 package Game;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 import java.io.Serializable;
 
-public class Skill implements Serializable {
+public class    Skill implements Serializable {
     private ArrayList<String> elements;
     private String skillName;
     private Integer basePower;
     private Integer masteryLevel;
+    // Buat GUI
+    private transient Image skillImageLvl1;
+    private transient Image skillImageLvl2;
+    private transient Image skillImageLvl3;
+
 
     public Skill(String skillName, Integer basePower, Integer masteryLevel) {
         this.elements = new ArrayList<String>();
         this.skillName = skillName;
         this.basePower = basePower;
         this.masteryLevel = masteryLevel;
+        this.loadImage();
     }
+
+    public void loadImage(){
+        ImageIcon img1,img2,img3;
+        String assetFolder = "/Users/shifa/Desktop/MapLagi/assets/";
+        img1 = new ImageIcon(assetFolder + this.skillName + "1" + ".png");
+        img2 = new ImageIcon(assetFolder + this.skillName + "2" + ".png");
+        img3 = new ImageIcon(assetFolder + this.skillName + "3" + ".png");
+        skillImageLvl1 = img1.getImage();
+        skillImageLvl2 = img2.getImage();
+        skillImageLvl3 = img3.getImage();
+    }
+
+    public Image getSkillImage() {
+        switch (this.masteryLevel) {
+            case 1:
+                return skillImageLvl1;
+            case 2:
+                return skillImageLvl2;
+            case 3:
+                return skillImageLvl3;
+            default:
+                System.out.println("mastery level skill invalid");
+                return null;
+        }
+    }
+
+
+
+    public Image getSkillImageLvl1(){
+        return this.skillImageLvl1;
+    }
+    public Image getSkillImageLvl2(){
+        return this.skillImageLvl2;
+    }
+    public Image getSkillImageLvl3(){
+        return this.skillImageLvl3;
+    }
+
 
     public void addElementSkill(String element) {
         this.elements.add(element);
@@ -90,5 +138,12 @@ public class Skill implements Serializable {
             }
         }
         return status;
+    }
+
+    private void readObject(ObjectInputStream ois)
+            throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+
+        loadImage();
     }
 }

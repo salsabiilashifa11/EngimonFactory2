@@ -14,10 +14,11 @@ import javax.swing.*;
 
 public class WildEngimon extends Engimon implements Serializable {
     private Position position;
-    private Timer timer = new Timer();
+    private transient Timer timer = new Timer();
     private Map map;
     //FOR GUI
-    private transient Image wildImage;
+    private transient Image wildImageSmall;
+    private transient Image wildImageBig;
 //    private Integer element2int(String element) {
 //        if (element.equals("fire") || element.equals("ground") || element.equals("electric") ){
 //            return 1;
@@ -109,8 +110,40 @@ public class WildEngimon extends Engimon implements Serializable {
 
     private void loadImage() {
         //Loading active engimon sprites
-        ImageIcon img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/WildEngimonRed.png");
-        wildImage = img.getImage();
+        ImageIcon img;
+        switch (this.getElements().get(0)) {
+            case "fire":
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/GreenBig.png");
+                wildImageBig = img.getImage();
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/GreenSmall.png");
+                wildImageSmall = img.getImage();
+                break;
+            case "water":
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/RedBig.png");
+                wildImageBig = img.getImage();
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/RedSmall.png");
+                wildImageSmall = img.getImage();
+                break;
+            case "electric":
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/YellowBig.png");
+                wildImageBig = img.getImage();
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/YellowSmall.png");
+                wildImageSmall = img.getImage();
+                break;
+            case "ground" :
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/PurpleBig.png");
+                wildImageBig = img.getImage();
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/PurpleSmall.png");
+                wildImageSmall = img.getImage();
+                break;
+            case "ice":
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/BlueBig.png");
+                wildImageBig = img.getImage();
+                img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/BlueSmall.png");
+                wildImageSmall = img.getImage();
+                break;
+        }
+
     }
 
     public String getStatus(){
@@ -244,10 +277,16 @@ public class WildEngimon extends Engimon implements Serializable {
         timer.schedule(myTask, 0, 5000);
     }
 
+    public void setMap(Map _m) { map = _m; }
+
     //For GUI - Drawing the Engimon
     @Override
     public void drawEngimon(Graphics g) {
-        g.drawImage(wildImage, position.getY()*32, position.getX()*32, null);
+        g.drawImage(wildImageBig, position.getY()*32, position.getX()*32, null);
+    }
+
+    public void drawEngimonSmall(Graphics g)  {
+        g.drawImage(wildImageSmall, position.getY()*32+4, position.getX()*32+4, null);
     }
 
     private void readObject(ObjectInputStream ois)

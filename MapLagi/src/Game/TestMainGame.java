@@ -41,10 +41,8 @@ public class TestMainGame implements ActionListener {
         System.setOut(consoleOutput.getPrintStream());
 //        System.setErr(consoleOutput.getPrintStream());
         consoleInput.getEnterButton().addActionListener(this::actionPerformed);
-        consoleInput.getNextButton().addActionListener(this::actionPerformed);
 
-
-        engimonInit(15); //generate 15 random engimon di awal
+        //engimonInit(15); //generate 15 random engimon di awal
 
         //setValidCommands
         validCommands.add("battle"); validCommands.add("help");
@@ -53,85 +51,21 @@ public class TestMainGame implements ActionListener {
 
     }
 
-    //Methods
-    public void engimonInit(int N) {
-        for (int i = 0; i < N; i++) {
-            WildEngimon spawned = engimonSpawn();
-            System.out.println(spawned == null);
-            board.getMap().getCell(spawned.getPosition().getX(), spawned.getPosition().getY())
-                    .setEngimon(spawned);
-            System.out.println(spawned.getName());
-            System.out.println(board.getMap().getCell(spawned.getPosition().getX(), spawned.getPosition().getY())
-                    .getEngimon().getName());
-            System.out.println(spawned.getPosition().getY());
-        }
-    }
-
-    public WildEngimon engimonSpawn() {
-        //Generate 1 random engimon
-        Random rand = new Random();
-        int upperboundCoordiante = 17;
-        int upperboundLevel = 30;
-
-        //Mencari cell kosong
-        int coorX = rand.nextInt(upperboundCoordiante) + 1;
-        int coorY = rand.nextInt(upperboundCoordiante) + 1;
-        int level = rand.nextInt(upperboundLevel) + 1;
-
-        while (board.getMap().getCell(coorX, coorY).getEngimon() != null
-                || board.getMap().getCell(coorX, coorY).getPlayer() != null) {
-            coorX = rand.nextInt(upperboundCoordiante);
-            coorY = rand.nextInt(upperboundCoordiante);
-        }
-        WildEngimon wildEngimon;
-        //Generate engimon berdasarkan cell type cell kosong
-        CellType cellTypeTujuan = board.getMap().getCell(coorX, coorY).getType();
-        switch (cellTypeTujuan){
-            case MOUNTAIN :
-                wildEngimon = new WildEngimon("ikan","fire",level,coorX,coorY,
-                    this.board.getMap());
-                break;
-            case GRASSLAND :
-                int type = rand.nextInt(2);
-                if (type == 0) {
-                   wildEngimon = new WildEngimon("kelelawar","ground",level,coorX,coorY,
-                            this.board.getMap());
-                }
-                else {
-                    wildEngimon = new WildEngimon("beruang","electric",level,coorX,coorY,
-                                this.board.getMap());
-                    }
-                break;
-            case SEA :
-                wildEngimon = new WildEngimon("kambing","water",level,coorX,coorY,
-                        this.board.getMap());
-                break;
-
-            case TUNDRA:
-                wildEngimon = new WildEngimon("kadal","ice",level,coorX,coorY,
-                        this.board.getMap());
-                break;
-            default :
-                System.out.println("Masuk NULL");
-                wildEngimon = null;
-
-        }
-        return wildEngimon;
-    }
 
     public void executeCommand(String command) {
         if (command.equals("help")) {
             consoleOutput.setLine1("HELP");
-            System.out.println("display   : Display player inventories");
-            System.out.println("battle    : Battle with wild engimon");
-            System.out.println("breed     : Breed 2 owned engimons");
-            System.out.println("change    : Change active engimon");
-            System.out.println("detail    : Display Engimon's detail");
-            System.out.println("          : information");
-            System.out.println("learn     : Teach engimon a skill");
-            System.out.println("interact  : Interact with current active");
-            System.out.println("          : engimon");
-            System.out.println("quit      : Exit game");
+            System.out.println("display      : Display player inventories");
+            System.out.println("battle       : Battle with wild engimon");
+            System.out.println("breed        : Breed 2 owned engimons");
+            System.out.println("change name  : Change engimon's name");
+            System.out.println("change active: Change active engimon");
+            System.out.println("detail       : Display Engimon's detail");
+            System.out.println("             : information");
+            System.out.println("learn        : Teach engimon a skill");
+            System.out.println("interact     : Interact with current active");
+            System.out.println("             : engimon");
+            System.out.println("quit         : Exit game");
 
             consoleInput.giveFocus();
 
@@ -200,8 +134,16 @@ public class TestMainGame implements ActionListener {
             consoleInput.giveFocus();
 
         }
-        else if (command.equals("change")){
-            System.out.println("CHANGE");
+        else if (command.equals("change name")){
+            System.out.println("CHANGE ENGIMON'S NAME");
+            System.out.println("List engimon di inventory:");
+            board.getPlayer().getPlayerEngimons().displayAll();
+            String oldName = JOptionPane.showInputDialog(board, "Masukkan nama engimon yang ingin diganti namanya:");
+            String newName = JOptionPane.showInputDialog(board, "Masukkan nama engimon yang baru:");
+            board.getPlayer().changeName(oldName,newName);
+        }
+        else if (command.equals("change active")){
+            System.out.println("CHANGE ACTIVE ENGIMON");
             System.out.print("Active Engimon = ");
             if (board.getPlayer().getActiveEngimon() == null){
                 System.out.println("tidak ada");
@@ -210,16 +152,15 @@ public class TestMainGame implements ActionListener {
                 System.out.println(board.getPlayer().getActiveEngimon().getName());
             }
             board.getPlayer().getPlayerEngimons().displayAll();
-            int idxEngimon = Integer.parseInt(JOptionPane.showInputDialog(board, "Masukkan nomor engimon yang akan dijadikan active:"));
-            board.getPlayer().changeActiveEngimon(idxEngimon);
-            System.out.println("Berhasil mengganti active engimon menjadi " + board.getPlayer().getActiveEngimon().getName());
+            String nama = JOptionPane.showInputDialog(board, "Masukkan nama engimon yang akan dijadikan active:");
+            board.getPlayer().changeActiveEngimon(nama);
             consoleInput.giveFocus();
         }
         else if (command.equals("detail")){
             System.out.println("DETAIL");
             System.out.println("List engimon di inventory:");
             board.getPlayer().getPlayerEngimons().displayAll();
-            //System.out.println("Masukkan nama engimon yang ingin dilihat detailnya");
+
             String namaEngimon = JOptionPane.showInputDialog(board, "Masukkan nama engimon yang ingin dilihat detailnya");
             board.getPlayer().displayEngimon(namaEngimon);
             consoleInput.giveFocus();
@@ -312,13 +253,10 @@ public class TestMainGame implements ActionListener {
         if (s.equals("enter")) {
             consoleOutput.getTextArea().setText("");
             inputCommand = consoleInput.getInputField().getText();
-            consoleOutput.getTextArea().select(0,0);
             System.out.println(inputCommand);
 
             executeCommand(inputCommand);
-            consoleInput.giveFocus();
-        } else if (s.equals("Next")) {
-            inputKebaca = consoleInput.getInputField().getText();
+            consoleOutput.getTextArea().select(0,0);
             consoleInput.giveFocus();
         }
     }
@@ -337,6 +275,7 @@ public class TestMainGame implements ActionListener {
             System.out.println("Berhasil save file");
         } catch (IOException e) {
             System.out.println("Gagal save file");
+            e.printStackTrace();
         }
     }
 

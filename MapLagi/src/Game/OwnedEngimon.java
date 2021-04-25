@@ -18,6 +18,7 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
     //Buat GUI
     private transient Image activeActive;
     private transient Image activeFront, activeLeft, activeRight, activeBack;
+    private transient Image ownedEngimonImage;
 
 
     static {
@@ -56,8 +57,17 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         activeRight = img.getImage();
         img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/OwnedBack.png");
         activeBack = img.getImage();
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/" + this.species + ".png");
+        ownedEngimonImage = img.getImage();
         activeActive = activeFront;
 
+    }
+    public Image getOwnedEngimonImage(){
+        return this.ownedEngimonImage;
+    }
+
+    public void setOwnedEngimonImage(Image _ownedEngimonImage){
+        this.ownedEngimonImage = _ownedEngimonImage;
     }
 
 //    public OwnedEngimon(String _name, String _species, int life, int level){
@@ -184,6 +194,11 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         g.drawImage(activeActive, position.getY()*32, position.getX()*32, null);
     }
 
+    public void drawEngimonSmall(Graphics g) {
+        g.drawImage(activeActive, position.getY()*32, position.getX()*32, null);
+    }
+
+
     public void move(GUI.Map map) {};
 
     public void setActiveActive(Image activeActive) {
@@ -194,6 +209,10 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
     public Image getActiveBack() { return activeBack; }
     public Image getActiveLeft() { return activeLeft; }
     public Image getActiveRight() { return activeRight; }
+
+    public Image getInvIcon() {
+        return ownedEngimonImage;
+    }
 
     private void readObject(ObjectInputStream ois)
             throws ClassNotFoundException, IOException {
@@ -208,6 +227,8 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         activeRight = img.getImage();
         img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/OwnedBack.png");
         activeBack = img.getImage();
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagi/assets/" + this.name + ".png");
+        ownedEngimonImage = img.getImage();
         activeActive = activeFront;
     }
 }
