@@ -4,9 +4,9 @@ import GUI.Board;
 import GUI.ConsoleInput;
 import GUI.ConsoleOutput;
 import GUI.HUD;
-import Game.TestMainGame;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import Game.MainGame;
+
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +23,7 @@ public class Main {
     public static Board board;
     public static ConsoleOutput consoleOutput;
     public static HUD hud;
+    public static JPanel extra, extra2;
 
     public Main() {
 
@@ -39,10 +40,12 @@ public class Main {
                 board = (Board) objectInputStream.readObject();
                 objectInputStream.close();
             } catch(FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null, "File tidak ditemukan, akan dimulai game baru");
+                JOptionPane.showMessageDialog(null,
+                        "File tidak ditemukan, akan dimulai game baru");
                 board = new Board();
             } catch (ClassNotFoundException | IOException e) {
-                JOptionPane.showMessageDialog(null, "Load file gagal, akan dimulai game baru");
+                JOptionPane.showMessageDialog(null,
+                        "Load file gagal, akan dimulai game baru");
                 board = new Board();
             }
         }
@@ -50,16 +53,24 @@ public class Main {
             JOptionPane.showMessageDialog(null, "Akan dimulai game baru");
             board = new Board();
         }
-        board.setBounds(0,0,640,668);
+        board.setBounds(20,20,640,658);
 
         consoleOutput = new ConsoleOutput(board);
-        consoleOutput.setBounds(640,0,460,450);
+        consoleOutput.setBounds(660,20,460,612);
 
         consoleInput = new ConsoleInput(board, consoleOutput);
-        consoleInput.setBounds(640, 450, 460, 218);
+        consoleInput.setBounds(660, 632, 460, 218);
 
         hud = new HUD(board);
-        hud.setBounds(0, 668, 640, 110);
+        hud.setBounds(20, 678, 640, 110);
+
+        extra = new JPanel();
+        extra.setBounds(0, 0, 20, 790);
+        extra.setBackground(Color.decode("#f2f2f2"));
+
+        extra2 = new JPanel();
+        extra.setBounds(0, 0, 1120, 20);
+        extra.setBackground(Color.decode("#f2f2f2"));
 
         JFrame frame = new JFrame();
         frame.setLayout(null);
@@ -68,13 +79,15 @@ public class Main {
         frame.add(consoleInput);
         frame.add(consoleOutput);
         frame.add(hud);
-        frame.setSize(1100,790); //adjust later header size = 28px
+        frame.add(extra);
+        frame.setSize(1120,790); //adjust later header size = 28px
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setResizable(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBackground(Color.decode("#f2f2f2"));
 
-        TestMainGame game = new TestMainGame(consoleOutput, consoleInput, board);
+        MainGame game = new MainGame(consoleOutput, consoleInput, board);
 
     }
 

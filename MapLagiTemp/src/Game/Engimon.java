@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.io.Serializable;
 
 public abstract class Engimon implements Serializable {
+    //Atribut
     public final static int MAX_EXP = 400;
     protected String name;
     protected String species;
@@ -18,6 +19,8 @@ public abstract class Engimon implements Serializable {
     protected int experience;
     protected int cumulativeExperience;
 
+
+    //Konstruktor
     public Engimon() {
         this.name = "XXX";
         this.species = "none";
@@ -40,6 +43,65 @@ public abstract class Engimon implements Serializable {
         this.cumulativeExperience = 0;
     }
 
+
+    //Getter
+    public String getName() {
+        return this.name;
+    }
+    public String getSpecies() {
+        return this.species;
+    }
+    public ArrayList<Skill> getSkill() {
+        return this.skills;
+    }
+    public int getNSkill() {
+        return this.skills.size();
+    }
+    public ArrayList<String> getElements() {
+        return this.elements;
+    }
+    public int getNElements() {
+        return this.elements.size();
+    }
+    public int getLife() {
+        return this.life;
+    }
+    public int getLevel() {
+        return this.level;
+    }
+    public int getExperience() {
+        return this.experience;
+    }
+    public int getCumulativeExperience() {
+        return this.cumulativeExperience;
+    }
+    public abstract String getStatus();
+    public abstract Position getPosition();
+
+
+    //Setter
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+    public void setLife(int life) {
+        this.life = life;
+    }
+    public void setLevel(int level) {
+        this.level = level;
+    }
+    public void setExperience(int exp) {
+        this.experience = exp;
+    }
+    public void setCumulativeExperience(int cExp) {
+        this.cumulativeExperience = cExp;
+    }
+    public abstract void setStatus(String status);
+
+
+    //Fungsi Tambahan
     public void levelUp() {
         while (this.experience >= 100) {
             this.experience -= 100;
@@ -56,79 +118,8 @@ public abstract class Engimon implements Serializable {
         }
     }
 
-    public abstract void displayDetail();
-
-    public abstract String getStatus();
-
-    public abstract void setStatus(String status);
-
-    // Getter and setter
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSpecies() {
-        return this.species;
-    }
-
-    public void setSpecies(String species) {
-        this.species = species;
-    }
-
-    public int getLife() {
-        return this.life;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
-    }
-
-    public int getLevel() {
-        return this.level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getExperience() {
-        return this.experience;
-    }
-
-    public void setExperience(int exp) {
-        this.experience = exp;
-    }
-
-    public int getCumulativeExperience() {
-        return this.cumulativeExperience;
-    }
-
-    public void setCumulativeExperience(int cExp) {
-        this.cumulativeExperience = cExp;
-    }
-
-    public ArrayList<Skill> getSkill() {
-        return this.skills;
-    }
-
-    public int getNSkill() {
-        return this.skills.size();
-    }
-
     public void addSkill(Skill skill) {
         this.skills.add(skill);
-    }
-
-    public ArrayList<String> getElements() {
-        return this.elements;
-    }
-
-    public int getNElements() {
-        return this.elements.size();
     }
 
     public void addElements(String element) {
@@ -171,7 +162,6 @@ public abstract class Engimon implements Serializable {
             return -1;
         }
     }
-
 
     public double getStrongestEl(Engimon enemy) {
         double strongest = ElementAdvantage.getAdv(this.getElements().get(0),enemy.getElements().get(0));
@@ -217,11 +207,11 @@ public abstract class Engimon implements Serializable {
         }
     }
 
+    public abstract void displayDetail();
+
     public abstract void drawEngimon(Graphics g);
 
     public abstract void move(Map map);
-
-    public abstract Position getPosition();
 
     public abstract void drawEngimonSmall(Graphics g);
 }

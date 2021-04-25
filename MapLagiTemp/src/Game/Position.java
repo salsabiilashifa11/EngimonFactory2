@@ -3,10 +3,11 @@ package Game;
 import java.io.Serializable;
 
 public class Position implements Serializable {
+    //Atribut
     private int x;
     private int y;
 
-    //    Constructor
+    //Konstruktor
     public Position() {
         this.x = -1;
         this.y = -1;
@@ -17,11 +18,10 @@ public class Position implements Serializable {
         this.y = _y;
     }
 
-    //    Setter Getter
+    //Getter
     public int getX() {
         return x;
     }
-
     public int getY() {
         return y;
     }
@@ -30,14 +30,11 @@ public class Position implements Serializable {
     public void setX(int _x) {
         x = _x;
     }
-
     public void setY(int _y) {
         y = _y;
     }
 
-
-
-    //    DEBUG
+    //Output
     void print() {
         System.out.println("X: " + x);
         System.out.println("Y: " + y);

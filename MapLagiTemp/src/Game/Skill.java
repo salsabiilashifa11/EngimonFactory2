@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.io.Serializable;
 
 public class    Skill implements Serializable {
+    //Atribut
     private ArrayList<String> elements;
     private String skillName;
     private Integer basePower;
@@ -19,6 +20,7 @@ public class    Skill implements Serializable {
     private transient Image skillImageLvl3;
 
 
+    //Konstruktor
     public Skill(String skillName, Integer basePower, Integer masteryLevel) {
         this.elements = new ArrayList<String>();
         this.skillName = skillName;
@@ -29,7 +31,7 @@ public class    Skill implements Serializable {
 
     public void loadImage(){
         ImageIcon img1,img2,img3;
-        String assetFolder = "/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/";
+        String assetFolder = "assets/";
         img1 = new ImageIcon(assetFolder + this.skillName + "1" + ".png");
         img2 = new ImageIcon(assetFolder + this.skillName + "2" + ".png");
         img3 = new ImageIcon(assetFolder + this.skillName + "3" + ".png");
@@ -53,7 +55,7 @@ public class    Skill implements Serializable {
     }
 
 
-
+    //Getter
     public Image getSkillImageLvl1(){
         return this.skillImageLvl1;
     }
@@ -63,48 +65,11 @@ public class    Skill implements Serializable {
     public Image getSkillImageLvl3(){
         return this.skillImageLvl3;
     }
-
-
-    public void addElementSkill(String element) {
-        this.elements.add(element);
-    }
-
-    public int getNElementSkill() {
-        return this.elements.size();
-    }
-
-    public ArrayList<String> getElement() {
-        return this.elements;
-    }
-
-    public String getSkillName() {
-        return this.skillName;
-    }
-
-    public void setSkillName(String name) {
-        this.skillName = name;
-    }
-
-    public Integer getBasePower() {
-        return this.basePower;
-    }
-
-    public void setBasePower(Integer basePower) {
-        this.basePower = basePower;
-    }
-
-    public Integer getMasteryLevel() {
-        return this.masteryLevel;
-    }
-
-    public void setMasteryLevel(Integer masteryLevel) {
-        if (masteryLevel > 3) {
-            System.out.println("Mastery level baru invalid");
-        }
-
-        this.masteryLevel = masteryLevel;
-    }
-
+    public int getNElementSkill() { return this.elements.size(); }
+    public ArrayList<String> getElement() { return this.elements; }
+    public String getSkillName() { return this.skillName; }
+    public Integer getBasePower() { return this.basePower; }
+    public Integer getMasteryLevel() { return this.masteryLevel; }
     public Skill getMaxMasteryLevel(Skill other) {
         if (this.masteryLevel > other.masteryLevel) {
             return this;
@@ -112,6 +77,21 @@ public class    Skill implements Serializable {
             return other;
         }
     }
+
+
+    //Setter
+    public void setSkillName(String name) { this.skillName = name; }
+    public void setBasePower(Integer basePower) { this.basePower = basePower; }
+    public void setMasteryLevel(Integer masteryLevel) {
+        if (masteryLevel > 3) {
+            System.out.println("Mastery level baru invalid");
+        }
+        this.masteryLevel = masteryLevel;
+    }
+
+
+    //Fungsi Tambahan
+    public void addElementSkill(String element) { this.elements.add(element); }
 
     public void displaySkill() {
         System.out.println("NamaSKill       : " + this.skillName);
@@ -140,10 +120,8 @@ public class    Skill implements Serializable {
         return status;
     }
 
-    private void readObject(ObjectInputStream ois)
-            throws ClassNotFoundException, IOException {
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
-
         loadImage();
     }
 }

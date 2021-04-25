@@ -10,13 +10,12 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class Map implements Serializable {
-
-    //Fields
+    //Atribut
     private transient Scanner m; //File textnya
     private String chars[] = new String[20]; //String input per line dari m
     private Cell matrix[][] = new Cell[20][20]; //Map matrix
 
-    //Constructor
+    //Konstruktor
     public Map() {
         openFile();
         readFile();
@@ -24,7 +23,7 @@ public class Map implements Serializable {
         chars2Map();
     }
 
-    //Methods
+    //Fungsi Tambahan
     public Cell getCell(int x, int y) {
         //This basically gets a tile from map in position x,y
         return matrix[x][y];
@@ -32,7 +31,7 @@ public class Map implements Serializable {
 
     public void openFile() {
         try {
-            m = new Scanner(new File("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/map/map.txt"));
+            m = new Scanner(new File("map/map.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("Error loading map");
         }

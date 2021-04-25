@@ -8,15 +8,12 @@ import java.awt.*;
 
 
 public class Cell implements Serializable {
-
-    //Fields
+    //Atribut
     private int x;
     private int y;
     private CellType type;
     private Player occupierP;
     private Engimon occupierE;
-
-
     //For GUI
     private transient Image cellTile;
     private char cellCode;
@@ -32,69 +29,91 @@ public class Cell implements Serializable {
         occupierE = null;
     }
 
-    //Aksesor
+    //Getter
     public int getX() { return x; }
     public int getY() { return y; }
     public CellType getType() { return type; }
     public Player getPlayer() { return occupierP; }
     public Engimon getEngimon() { return occupierE; }
 
+    //Setter
     public void setPlayer(Player p) { occupierP = p; }
     public void setEngimon(Engimon e) { occupierE = e; }
     public void setCellTile(char _char) {
         this.cellCode = _char;
         ImageIcon img;
         switch (_char) {
-            case 'f':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/Flower.png");
-                cellTile = img.getImage();
-                break;
-            case 'b':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/Berg.png");
+            case 't':
+                img =  new ImageIcon("assets/tiles/tree.png");
                 cellTile = img.getImage();
                 break;
             case 'g':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/Grass.png");
+                img =  new ImageIcon("assets/tiles/grass.png");
                 cellTile = img.getImage();
                 break;
-            case 'i':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/Ice.png");
+            case 'l':
+                img =  new ImageIcon("assets/tiles/iceBACK_wall.png");
                 cellTile = img.getImage();
                 break;
-            case 'n':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/IceN.png");
+            case 'L':
+                img =  new ImageIcon("assets/tiles/iceUP_wall.png");
                 cellTile = img.getImage();
                 break;
-            case 't':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/IceT.png");
-                cellTile = img.getImage();
-                break;
-            case 'o':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/IceO.png");
-                cellTile = img.getImage();
-                break;
-            case 's':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/Sea.png");
-                cellTile = img.getImage();
-                break;
-            case 'a':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/MountainA.png");
-                cellTile = img.getImage();
-                break;
-            case 'e':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/MountainB.png");
-                cellTile = img.getImage();
-                break;
-            case 'c':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/MountainC.png");
+            case 'b':
+                img =  new ImageIcon("assets/tiles/iceBRIDGE.png");
                 cellTile = img.getImage();
                 break;
             case 'd':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/MountainD.png");
+                img =  new ImageIcon("assets/tiles/iceDOWN.png");
                 cellTile = img.getImage();
                 break;
             case 'h':
-                img =  new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/MountainH.png");
+                img =  new ImageIcon("assets/tiles/iceHOUSE.png");
+                cellTile = img.getImage();
+                break;
+            case 'c':
+                img =  new ImageIcon("assets/tiles/iceROCK.png");
+                cellTile = img.getImage();
+                break;
+
+            case 'u':
+                img =  new ImageIcon("assets/tiles/iceUP.png");
+                cellTile = img.getImage();
+                break;
+            case 'k':
+                img =  new ImageIcon("assets/tiles/iceBACK.png");
+                cellTile = img.getImage();
+                break;
+            case 'o':
+                img =  new ImageIcon("assets/tiles/orange.png");
+                cellTile = img.getImage();
+                break;
+            case 'n':
+                img =  new ImageIcon("assets/tiles/snowman.png");
+                cellTile = img.getImage();
+                break;
+            case 's':
+                img =  new ImageIcon("assets/tiles/sea.png");
+                cellTile = img.getImage();
+                break;
+            case 'w':
+                img =  new ImageIcon("assets/tiles/wave.png");
+                cellTile = img.getImage();
+                break;
+            case 'a':
+                img =  new ImageIcon("assets/tiles/waveROCK.png");
+                cellTile = img.getImage();
+                break;
+            case 'y':
+                img =  new ImageIcon("assets/tiles/yellow.png");
+                cellTile = img.getImage();
+                break;
+            case 'e':
+                img =  new ImageIcon("assets/tiles/yellowROCK.png");
+                cellTile = img.getImage();
+                break;
+            case 'r':
+                img =  new ImageIcon("assets/tiles/brown.png");
                 cellTile = img.getImage();
                 break;
             default:
@@ -102,28 +121,32 @@ public class Cell implements Serializable {
         }
     }
 
-    //Methods
+    //Fungsi Tambahan
     private CellType mapChar(char _char) {
         //Memetakan CellType berdasarkan karakter pada map.txt
         switch (_char) {
-            case 'f':
-            case 'b':
+            case 't':
+            case 'l':
+            case 'L':
+            case 'd':
                 return CellType.WALL;
             case 'g':
                 return CellType.GRASSLAND;
-            case 'i':
+            case 'b':
+            case 'h':
+            case 'c':
+            case 'u':
             case 'n':
-            case 't':
-            case 'o':
+            case 'k':
                 return CellType.TUNDRA;
             case 's':
-                return CellType.SEA;
-            case 'm':
+            case 'w':
             case 'a':
+                return CellType.SEA;
+            case 'o':
+            case 'y':
             case 'e':
-            case 'c':
-            case 'd':
-            case 'h':
+            case 'r':
                 return CellType.MOUNTAIN;
             default:
                 return null;

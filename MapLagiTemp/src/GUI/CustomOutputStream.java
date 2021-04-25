@@ -5,15 +5,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class CustomOutputStream extends OutputStream {
-    //Fields
+    //Atribut
     private JTextArea textArea;
 
-    //Constructor
+    //Konstruktor
     public CustomOutputStream(JTextArea textArea) {
         this.textArea = textArea;
     }
 
-    //Methods
+    //Fungsi Tambahan
     @Override
     public void write(int b) throws IOException {
         // redirects data to the text area

@@ -11,16 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OwnedEngimon extends Engimon implements Inventoryable, Serializable {
+    //Atribut
     private ArrayList<String> parentName;
     private Position position;
     private static final Map<String, String> percakapan;
-
     //Buat GUI
     private transient Image activeActive;
     private transient Image activeFront, activeLeft, activeRight, activeBack;
     private transient Image ownedEngimonImage;
-
-
     static {
         HashMap<String, String> temp = new HashMap<String, String>();
         temp.put("ikan", "halo saya api");
@@ -31,10 +29,11 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         temp.put("siamang","halo saya kebakaran");
         temp.put("mammoth", "halo saya LDR");
         temp.put("kecoa", "halo saya subur");
-
         percakapan = Collections.unmodifiableMap(temp);
     }
 
+
+    //Konstruktor
     public OwnedEngimon(){
         super();
         this.status = "owned";
@@ -49,62 +48,65 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         this.position = new Position();
 
         //Loading active engimon sprites
-        ImageIcon img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/OwnedFront.png");
+        ImageIcon img = new ImageIcon("assets/OwnedFront.png");
         activeFront = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/OwnedLeft.png");
+        img = new ImageIcon("assets/OwnedLeft.png");
         activeLeft = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/OwnedRight.png");
+        img = new ImageIcon("assets/OwnedRight.png");
         activeRight = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/OwnedBack.png");
+        img = new ImageIcon("assets/OwnedBack.png");
         activeBack = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/" + this.species + ".png");
+        img = new ImageIcon("assets/" + this.species + ".png");
         ownedEngimonImage = img.getImage();
         activeActive = activeFront;
-
     }
+
+    //Getter
     public Image getOwnedEngimonImage(){
         return this.ownedEngimonImage;
     }
-
-    public void setOwnedEngimonImage(Image _ownedEngimonImage){
-        this.ownedEngimonImage = _ownedEngimonImage;
-    }
-
-//    public OwnedEngimon(String _name, String _species, int life, int level){
-//        super(life, level);
-//        this.name = _name;
-//        this.species = _species;
-//        this.status = "owned";
-//        this.parentName = new ArrayList<String>(2);
-//        this.position = new Position();
-//    }
-
     public ArrayList<String> getParentName() {
         return parentName;
     }
+    public String getStatus() {
+        return this.status;
+    }
+    public Position getPosition() {
+        return position;
+    }
+    public int getQuantity() {
+        return 1;
+    }
+    public Image getActiveFront() { return activeFront; }
+    public Image getActiveBack() { return activeBack; }
+    public Image getActiveLeft() { return activeLeft; }
+    public Image getActiveRight() { return activeRight; }
+    public Image getInvIcon() {
+        return ownedEngimonImage;
+    }
 
+
+    //Setter
+    public void setOwnedEngimonImage(Image _ownedEngimonImage){
+        this.ownedEngimonImage = _ownedEngimonImage;
+    }
     public void setParentName(String parentName1, String parentName2) {
         this.parentName.add(parentName1);
         this.parentName.add(parentName2);
     }
-
-    public String getStatus() {
-        return this.status;
-    }
-
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public Position getPosition() {
-        return position;
-    }
-
     public void setPosition(int _x, int _y) {
         this.position.setX(_x);
         this.position.setY(_y);
     }
+    public void setActiveActive(Image activeActive) {
+        this.activeActive = activeActive;
+    }
 
+
+    //Fungsi Tambahan
     public void interact(){
         System.out.println("[" + this.name + "]: " + percakapan.get(this.species));
     }
@@ -154,25 +156,6 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
 
     }
 
-    public boolean fight(Engimon enemy){
-        double myPower = 0;
-        myPower += enemy.getStrongestEl(enemy) * this.getLevel();
-        for (int i = 0; i < this.getNSkill(); i++) {
-            myPower += (this.skills.get(i).getBasePower() * this.skills.get(i).getMasteryLevel());
-        }
-
-        double enemyPower = 0;
-        enemyPower += enemy.getStrongestEl(this) * enemy.getLevel();
-        for (int i = 0; i < enemy.getNSkill(); i++) {
-            enemyPower += enemy.getSkill().get(i).getBasePower() * enemy.getSkill().get(i).getMasteryLevel();
-        }
-//        System.out.println("======================Info Battle======================");
-//        System.out.println("My Power       : " + myPower);
-//        System.out.println("Enemy Power    : " + enemyPower);
-
-        return myPower >= enemyPower;
-    }
-
     public void calculatePower(Engimon enemy) {
         double myPower = 0;
         myPower += enemy.getStrongestEl(enemy) * this.getLevel();
@@ -190,6 +173,21 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         System.out.println("Enemy Power    : " + enemyPower);
     }
 
+    public boolean fight(Engimon enemy){
+        double myPower = 0;
+        myPower += enemy.getStrongestEl(enemy) * this.getLevel();
+        for (int i = 0; i < this.getNSkill(); i++) {
+            myPower += (this.skills.get(i).getBasePower() * this.skills.get(i).getMasteryLevel());
+        }
+
+        double enemyPower = 0;
+        enemyPower += enemy.getStrongestEl(this) * enemy.getLevel();
+        for (int i = 0; i < enemy.getNSkill(); i++) {
+            enemyPower += enemy.getSkill().get(i).getBasePower() * enemy.getSkill().get(i).getMasteryLevel();
+        }
+
+        return myPower >= enemyPower;
+    }
 
     public void invDisplay() {
         System.out.print(getName() + "/");
@@ -199,10 +197,6 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         }
         System.out.print("/");
         System.out.println("Lv." + getLevel());
-    }
-
-    public int getQuantity() {
-        return 1;
     }
 
     public void addQuantity(int n) {}
@@ -216,37 +210,24 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         g.drawImage(activeActive, position.getY()*32, position.getX()*32, null);
     }
 
-
     public void move(GUI.Map map) {};
 
-    public void setActiveActive(Image activeActive) {
-        this.activeActive = activeActive;
-    }
-
-    public Image getActiveFront() { return activeFront; }
-    public Image getActiveBack() { return activeBack; }
-    public Image getActiveLeft() { return activeLeft; }
-    public Image getActiveRight() { return activeRight; }
-
-    public Image getInvIcon() {
-        return ownedEngimonImage;
-    }
 
     private void readObject(ObjectInputStream ois)
             throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
 
         //Loading active engimon sprites
-        ImageIcon img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/OwnedFront.png");
+        ImageIcon img = new ImageIcon("assets/OwnedFront.png");
         activeFront = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/OwnedLeft.png");
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagiTemp/assets/OwnedLeft.png");
         activeLeft = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/OwnedRight.png");
+        img = new ImageIcon("/Users/shifa/Desktop/MapLagiTemp/assets/OwnedRight.png");
         activeRight = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/OwnedBack.png");
+        img = new ImageIcon("assets/OwnedBack.png");
         activeBack = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/" + this.name + ".png");
+        img = new ImageIcon("assets/" + this.species + ".png");
         ownedEngimonImage = img.getImage();
-        activeActive = activeFront;
+         activeActive = activeFront;
     }
 }

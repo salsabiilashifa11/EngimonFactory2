@@ -4,32 +4,36 @@ import java.io.Serializable;
 import java.awt.Image;
 
 public class SkillItems implements Inventoryable, Serializable {
+    //Atribut
     private Skill item_skill;
     private Integer quantity;
 
+    //Konstruktor
     public SkillItems(Skill s, Integer q) {
         this.item_skill = s;
         this.quantity = q;
     }
 
+    //Getter
     public int getQuantity() {
         return this.quantity;
     }
-
     public String getName() {
         return this.item_skill.getSkillName();
     }
-
-    public void addQuantity(int n) {
-        this.quantity += n;
-    }
-
     public Skill getSkill() {
         return this.item_skill;
     }
-
     public Integer getBasePower(){
         return this.item_skill.getBasePower();
+    }
+    public Image getInvIcon() {
+        return item_skill.getSkillImage();
+    }
+
+    //Fungsi Tambahan
+    public void addQuantity(int n) {
+        this.quantity += n;
     }
 
     public void invDisplay() {
@@ -41,9 +45,5 @@ public class SkillItems implements Inventoryable, Serializable {
             System.out.print(", " + this.item_skill.getElement().get(i));
         }
         System.out.println();
-    }
-
-    public Image getInvIcon() {
-        return item_skill.getSkillImage();
     }
 }

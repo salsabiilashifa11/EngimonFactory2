@@ -20,9 +20,8 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import java.awt.*;
 
-public class TestMainGame implements ActionListener {
-
-    //Fields
+public class MainGame implements ActionListener {
+    //Atribut
     ConsoleOutput consoleOutput;
     ConsoleInput consoleInput;
     Board board;
@@ -31,9 +30,9 @@ public class TestMainGame implements ActionListener {
     String inputCommand;
     ArrayList<String> validCommands = new ArrayList<>();
 
-    //Constructor
-    public TestMainGame(ConsoleOutput _consoleOutput, ConsoleInput _consoleInput,
-                        Board _board) {
+    //Konstruktor
+    public MainGame(ConsoleOutput _consoleOutput, ConsoleInput _consoleInput,
+                    Board _board) {
         status = true;
         consoleOutput = _consoleOutput;
         consoleInput = _consoleInput;
@@ -66,18 +65,19 @@ public class TestMainGame implements ActionListener {
             System.out.println("interact     : Interact with current active");
             System.out.println("             : engimon");
             System.out.println("delete       : Menghapus isi dari inventory");
+            System.out.println("save         : Menyimpan game");
             System.out.println("quit         : Exit game");
 
             consoleInput.giveFocus();
 
         }
         else if (command.equals("display")){
-            System.out.println("DISPLAY INVENTORY");
+            consoleOutput.setLine1("DISPLAY INVENTORY");
             board.getPlayer().showInventory();
             consoleInput.giveFocus();
         }
         else if (command.equals("battle")){
-            System.out.println("BATTLE");
+            consoleOutput.setLine1("BATTLE");
             if (board.getPlayer().getActiveEngimon() != null) {
                 if (board.getPlayer().getEnemy() == null) {
                     System.out.println("Ga ada musuh");
@@ -95,10 +95,19 @@ public class TestMainGame implements ActionListener {
                         if (menang) {
                             System.out.println("Anda memenangkan battle");
                             String nama = JOptionPane.showInputDialog(board, "Masukkan nama dari engimon : ");
+                            int idxE = board.getPlayer().getPlayerEngimons().indexByName(nama);
+                            while (idxE != -1){
+                                nama = JOptionPane.showInputDialog(board,"Nama sudah diambil engimon lain. Masukkan nama yang berbeda:");
+                                idxE = board.getPlayer().getPlayerEngimons().indexByName(nama);
+                            }
                             board.getPlayer().winBattle(board.getPlayer().getEnemy().getEngimon(), nama);
                         }
                         else{
                             System.out.println("Lu kalah ta**i");
+                            if (board.getPlayer().getPlayerEngimons().n_elmt() == 0) {
+                                JOptionPane.showInputDialog(board,"Engimon yang kamu miliki sudah habis. Kamu kalah!!!\nPress Any Button to Close");
+                                System.exit(0);
+                            }
                             currentEnemy.resumeTimer();
 
                         }
@@ -116,7 +125,7 @@ public class TestMainGame implements ActionListener {
             consoleInput.giveFocus();
         }
         else if (command.equals("breed")){
-            System.out.println("BREED");
+            consoleOutput.setLine1("BREED");
             Boolean breedAble = board.getPlayer().checkBreed();
             if (breedAble){
                 //System.out.println("Masukkan nama Abi : ");
@@ -129,15 +138,15 @@ public class TestMainGame implements ActionListener {
                 String namaAnak = JOptionPane.showInputDialog(board, "Masukkan nama Anak : ");;
                 System.out.println("Nama anak : " + namaAnak);
                 board.getPlayer().breed(board.getPlayer().getPlayerEngimons().get(board.getPlayer().getPlayerEngimons().indexByName(Abi)), board.getPlayer().getPlayerEngimons().get(board.getPlayer().getPlayerEngimons().indexByName(Mami)), namaAnak);
+                System.out.println("Berhasil melakukan breed");
             }
             else{
                 System.out.println("Gabisa breed");
             }
             consoleInput.giveFocus();
-
         }
         else if (command.equals("change name")){
-            System.out.println("CHANGE ENGIMON'S NAME");
+            consoleOutput.setLine1("CHANGE ENGIMON'S NAME");
             System.out.println("List engimon di inventory:");
             board.getPlayer().getPlayerEngimons().displayAll();
             String oldName = JOptionPane.showInputDialog(board, "Masukkan nama engimon yang ingin diganti namanya:");
@@ -145,7 +154,7 @@ public class TestMainGame implements ActionListener {
             board.getPlayer().changeName(oldName,newName);
         }
         else if (command.equals("change active")){
-            System.out.println("CHANGE ACTIVE ENGIMON");
+            consoleOutput.setLine1("CHANGE ACTIVE ENGIMON");
             System.out.print("Active Engimon = ");
             if (board.getPlayer().getActiveEngimon() == null){
                 System.out.println("tidak ada");
@@ -159,7 +168,7 @@ public class TestMainGame implements ActionListener {
             consoleInput.giveFocus();
         }
         else if (command.equals("detail")){
-            System.out.println("DETAIL");
+            consoleOutput.setLine1("DETAIL");
             System.out.println("List engimon di inventory:");
             board.getPlayer().getPlayerEngimons().displayAll();
 
@@ -168,7 +177,7 @@ public class TestMainGame implements ActionListener {
             consoleInput.giveFocus();
         }
         else if (command.equals("delete")){
-            System.out.println("DELETE");
+            consoleOutput.setLine1("DELETE");
             board.getPlayer().showInventory();
             String tipe = JOptionPane.showInputDialog(board, "Pilih tipe yang ingin dibuang: (engimon/skillitem)");
             if (tipe.equals("engimon")){
@@ -202,7 +211,7 @@ public class TestMainGame implements ActionListener {
             }
         }
         else if (command.equals("learn")){
-            System.out.println("USING SKILL ITEMS");
+            consoleOutput.setLine1("USING SKILL ITEMS");
             System.out.println("List skill items di inventory:");
             board.getPlayer().getPlayerItems().displayAll();
             String skillName = JOptionPane.showInputDialog(board, "Pilih nama skill item yang ingin dipakai:");
@@ -233,6 +242,7 @@ public class TestMainGame implements ActionListener {
             consoleInput.giveFocus();
         }
         else if (command.equals("interact")) {
+            consoleOutput.setLine1("INTERACT");
             board.getPlayer().interactEngimon();
             consoleInput.giveFocus();
         }
@@ -252,7 +262,6 @@ public class TestMainGame implements ActionListener {
         if (s.equals("enter")) {
             consoleOutput.getTextArea().setText("");
             inputCommand = consoleInput.getInputField().getText();
-            System.out.println(inputCommand);
 
             executeCommand(inputCommand);
             consoleOutput.getTextArea().select(0,0);

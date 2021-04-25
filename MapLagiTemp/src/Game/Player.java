@@ -16,22 +16,22 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.reverseOrder;
 
 public class Player implements Serializable {
-
-    //Fields
+    //Atribut
     private String name;
     private Map map;
     private OwnedEngimon active;
     private Inventory<OwnedEngimon> playerEngimons;
     private Inventory<SkillItems> playerItems;
-    public final static int MAX_EL = 15;
-    public final static int MAX_EXP = 20150;
+    public final static int MAX_EL = 25;
+    public final static int MAX_EXP = 200;
     // GUI
     private Position position; //Tile positions (single increments)
     private int x, y; //for GUI drawing positions
     private transient Image playerActive;
     private transient Image playerFront, playerLeft, playerRight, playerBack;
 
-    //Constructor
+
+    //Konstruktor
     public Player(String _name, Map _map) {
         //Attribute initialization
         name = _name;
@@ -47,27 +47,24 @@ public class Player implements Serializable {
         map.getCell(1, 2).setEngimon(active);
 
         //For GUI - loading all player sprites
-
         //Loading player sprites
-        ImageIcon img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PlayerFront.png");
+        ImageIcon img = new ImageIcon("assets/PlayerFront.png");
         playerFront = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PlayerLeft.png");
+        img = new ImageIcon("assets/PlayerLeft.png");
         playerLeft = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PlayerRight.png");
+        img = new ImageIcon("assets/PlayerRight.png");
         playerRight = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PlayerBack.png");
+        img = new ImageIcon("assets/PlayerBack.png");
         playerBack = img.getImage();
         playerActive = playerFront;
 
         //Initiate player position to tile (1,1)
         x = 32;
         y = 32;
-
-        //DEBUG
-
     }
 
-    //Aksesor
+
+    //Getter
     public Image getPlayerActive() { return playerActive; }
     public Image getPlayerFront() { return playerFront; }
     public Image getPlayerBack() { return playerBack; }
@@ -81,6 +78,8 @@ public class Player implements Serializable {
     public Inventory<OwnedEngimon> getPlayerEngimons() {return playerEngimons;}
     public Inventory<SkillItems> getPlayerItems() {return playerItems;}
 
+
+    //Setter
     public void setPlayerActive(Image playerActive) { this.playerActive = playerActive; }
     public void setPosition(int x, int y) {
         map.getCell(position.getX(), position.getY()).setPlayer(null);
@@ -89,16 +88,20 @@ public class Player implements Serializable {
         map.getCell(x, y).setPlayer(this);
     }
 
-    //Methods
+
+    //Fungsi Tambahan
     public void move(int dx, int dy, char _direction) {
         Position temp;
         temp = new Position(position.getX(), position.getY());
-        System.out.println("TEMP: " + temp.getX() + "," + temp.getY());
         Position tujuan;
         Engimon tujuanOccupier;
         if (validMove(_direction)) {
-            if (active != null) {
+            if (active != null && active.getPosition().getX() != -1) {
                 map.getCell(active.getPosition().getX(), active.getPosition().getY()).setEngimon(null);
+                active.setPosition(temp.getX(),temp.getY());
+                map.getCell(active.getPosition().getX(), active.getPosition().getY()).setEngimon(active);
+            }
+            else if (active != null && active.getPosition().getX() == -1) {
                 active.setPosition(temp.getX(),temp.getY());
                 map.getCell(active.getPosition().getX(), active.getPosition().getY()).setEngimon(active);
             }
@@ -163,7 +166,7 @@ public class Player implements Serializable {
         }
 
         //DEBUG
-        System.out.println(position.getX() + "," + position.getY());
+        //System.out.println(position.getX() + "," + position.getY());
 
     }
 
@@ -200,7 +203,6 @@ public class Player implements Serializable {
     }
 
     public void breed(OwnedEngimon father, OwnedEngimon mother, String anak) {
-
         //Validasi level parents
         if (father.getLevel() < 4 && mother.getLevel() < 4) {
             System.out.println("Belom cukup umur");
@@ -499,25 +501,10 @@ public class Player implements Serializable {
     }
 
     public void activeMati(){
-        /*try{
-            playerEngimons.n_elmt() == 1;
-        } catch {
-            System.out.println("Kamu ga punya engimon");
-        }*/
-
-        //bikin class baru EngimonException extends Exception
-        if (this.playerEngimons.n_elmt() == 1) {
-//            throw new EngimonException("Kamu ga punya engimon");
-        }
-        else{
-            active.setStatus("dead");
-            int posX, posY;
-            posX = active.getPosition().getX();
-            posY = active.getPosition().getY();
-            active.setPosition(0, 0);
-            playerEngimons.deleteAt(playerEngimons.indexByName(active.getName()));
-            active = null;
-        }
+        active.setStatus("dead");
+        active.setPosition(-1, -10);
+        playerEngimons.deleteAt(playerEngimons.indexByName(active.getName()));
+        active = null;
     }
 
     public void addToInventory(OwnedEngimon el){
@@ -578,39 +565,39 @@ public class Player implements Serializable {
 
     public void makeEngimon() {
         //Engimon
-        OwnedEngimon temp =  new OwnedEngimon("pikachu","mammoth",3,20);
+        OwnedEngimon temp =  new OwnedEngimon("pikachu","mammoth",3,15);
         temp.addElements("water");
         temp.addElements("ice");
-        temp.setLevel(200);
+        temp.setLevel(20);
         Skill s1 = new Skill("libasan ekor keadilan",100,3);
         s1.addElementSkill("ice");
         //Skill s2= new Skill("Tandukan kebenaran surgawi",100,2);
         //s2.addElementSkill("ice");
-        Skill s3= new Skill("serudukan tanduk keputusasaan",100,3);
+        Skill s3= new Skill("serudukan tanduk keputusasaan",100,1);
         s3.addElementSkill("water");
         temp.addSkill(s1);
         //temp.addSkill(s2);
         temp.addSkill(s3);
         this.playerEngimons.append(temp);
 
-        OwnedEngimon tes1 = new OwnedEngimon("raichu","kecoa",3,20);
+        OwnedEngimon tes1 = new OwnedEngimon("raichu","kecoa",3,10);
         tes1.addElements("water");
         tes1.addElements("ice");
-        tes1.setLevel(200);
-        Skill st1 = new Skill("serudukan tanduk keputusasaan",100,3);
+        tes1.setLevel(20);
+        Skill st1 = new Skill("serudukan tanduk keputusasaan",100,1);
         st1.addElementSkill("water");
-        Skill st2 = new Skill("teriakan ultrasonic kemarahan",100,3);
+        Skill st2 = new Skill("teriakan ultrasonic kemarahan",100,2);
         st2.addElementSkill("ground");
         tes1.addSkill(st1);
         tes1.addSkill(st2);
         this.playerEngimons.append(tes1);
 
-        OwnedEngimon tes2 = new OwnedEngimon("mewtwo", "siamang",1,1);
+        OwnedEngimon tes2 = new OwnedEngimon("mewtwo", "siamang",14,3);
         tes2.addElements("ground");
         tes2.addElements("electric");
         tes2.setLevel(1);
-        Skill stt1 = new Skill("tembakan gelembung kebebasan",5,1);
-        Skill stt2 = new Skill("cakaran cakar kematian",5,1);
+        Skill stt1 = new Skill("tembakan gelembung kebebasan",50,2);
+        Skill stt2 = new Skill("cakaran cakar kematian",50,1);
         stt1.addElementSkill("fire");
         stt2.addElementSkill("electric");
         tes2.addSkill(stt1);
@@ -653,9 +640,9 @@ public class Player implements Serializable {
         for (i=-1; i<=1; i++){
             for (j=-1; j<=1; j++){
                 // 30 sama 0 nya blm diganti
-                if (position.getX()+i < 30 && position.getX()+i > 0 && position.getY()+j < 30 && position.getY()+j > 0) {
+                if (position.getX()+i < 19 && position.getX()+i > 0 && position.getY()+j < 19 && position.getY()+j > 0) {
                     if (map.getCell(position.getX()+i, position.getY()+j).getEngimon() != null
-                            && map.getCell(position.getX()+i, position.getY()+j).getEngimon() != active) {
+                            && !map.getCell(position.getX()+i, position.getY()+j).getEngimon().getName().equals(active.getName())) {
                         return map.getCell(position.getX()+i, position.getY()+j);
                     }
                 }
@@ -664,32 +651,29 @@ public class Player implements Serializable {
         return null;
     }
 
-//    public void executeBattle(String name){
-//
-//
-//                Boolean menang = battle(getEnemy().getEngimon());
-//            if (menang){
-//                winBattle(getEnemy().getEngimon(), "Bambang");
-//            }
-//            else{
-//                System.out.println("Lu kalah ta**i");
-//            }
-//
-//    }
-
     private void readObject(ObjectInputStream ois)
         throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
 
         //Loading player sprites
-        ImageIcon img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PlayerFront.png");
+        ImageIcon img = new ImageIcon("assets/PlayerFront.png");
         playerFront = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PlayerLeft.png");
+        img = new ImageIcon("assets/PlayerLeft.png");
         playerLeft = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PlayerRight.png");
+        img = new ImageIcon("assets/PlayerRight.png");
         playerRight = img.getImage();
-        img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PlayerBack.png");
+        img = new ImageIcon("assets/PlayerBack.png");
         playerBack = img.getImage();
         playerActive = playerFront;
+    }
+
+    public int getMaxLevelEngimon(){
+        int max = -1;
+        for (int i=0;i<this.playerEngimons.n_elmt();i++){
+           if (max < this.playerEngimons.get(i).getLevel()){
+               max = this.playerEngimons.get(i).getLevel();
+           }
+        }
+        return max;
     }
 }

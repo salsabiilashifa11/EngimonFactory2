@@ -13,20 +13,13 @@ import GUI.Map;
 import javax.swing.*;
 
 public class WildEngimon extends Engimon implements Serializable {
+    //Atribut
     private Position position;
     private transient Timer timer = new Timer();
     private Map map;
     //FOR GUI
     private transient Image wildImageSmall;
     private transient Image wildImageBig;
-//    private Integer element2int(String element) {
-//        if (element.equals("fire") || element.equals("ground") || element.equals("electric") ){
-//            return 1;
-//        } else {
-//            return 2;
-//        }
-//    }
-
     private static final HashMap<String, String> spesiesSkill;
     static {
         spesiesSkill = new HashMap<String, String>();
@@ -39,19 +32,7 @@ public class WildEngimon extends Engimon implements Serializable {
     }
 
 
-
-//    public WildEngimon() {
-//        super();
-//        this.status = "wild";
-//        this.position = new Position();
-//    }
-//
-//    public WildEngimon(String name, String species, int life, int level){
-//        super(name, species, life, level);
-//        this.status = "wild";
-//        this.position = new Position();
-//    }
-
+    //Konstruktor
     public WildEngimon(String _species, String _element, int _level, int _x, int _y, Map _m){
         this.name = _species;
         this.species = _species;
@@ -82,12 +63,8 @@ public class WildEngimon extends Engimon implements Serializable {
         }
 
         Skill s = new Skill(namaSkill,basePower, masteryLevel);
-        //this.elements.set(0,_element);
         this.addElements(_element);
-        //this->nElements = 1; //auto ter-set 1
         s.addElementSkill(this.elements.get(0));
-        //this.skills.
-        //this->nSkill = 0; //butuh setter
         this.addSkill(s);
         this.level = _level;
         this.experience = 0;
@@ -95,9 +72,7 @@ public class WildEngimon extends Engimon implements Serializable {
         this.status = "wild";
         this.position = new Position();
         this.setPosition(_x,_y,_m);
-
         loadImage();
-
         TimerTask myTask = new TimerTask() {
             @Override
             public void run() {
@@ -122,58 +97,62 @@ public class WildEngimon extends Engimon implements Serializable {
         ImageIcon img;
         switch (this.getElements().get(0)) {
             case "fire":
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/GreenBig.png");
+                img = new ImageIcon("assets/GreenBig.png");
                 wildImageBig = img.getImage();
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/GreenSmall.png");
+                img = new ImageIcon("assets/GreenSmall.png");
                 wildImageSmall = img.getImage();
                 break;
             case "water":
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/RedBig.png");
+                img = new ImageIcon("assets/RedBig.png");
                 wildImageBig = img.getImage();
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/RedSmall.png");
+                img = new ImageIcon("assets/RedSmall.png");
                 wildImageSmall = img.getImage();
                 break;
             case "electric":
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/YellowBig.png");
+                img = new ImageIcon("assets/YellowBig.png");
                 wildImageBig = img.getImage();
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/YellowSmall.png");
+                img = new ImageIcon("assets/YellowSmall.png");
                 wildImageSmall = img.getImage();
                 break;
             case "ground" :
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PurpleBig.png");
+                img = new ImageIcon("assets/PurpleBig.png");
                 wildImageBig = img.getImage();
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/PurpleSmall.png");
+                img = new ImageIcon("assets/PurpleSmall.png");
                 wildImageSmall = img.getImage();
                 break;
             case "ice":
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/BlueBig.png");
+                img = new ImageIcon("assets/BlueBig.png");
                 wildImageBig = img.getImage();
-                img = new ImageIcon("/Users/darubagus/Downloads/EngimonFactory2-main/MapLagi/assets/BlueSmall.png");
+                img = new ImageIcon("assets/BlueSmall.png");
                 wildImageSmall = img.getImage();
                 break;
         }
-
     }
 
+
+    //Getter
     public String getStatus(){
         return this.status;
     }
     public Timer getTimer() { return timer; }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Position getPosition() {
         return position;
     }
 
+
+    //Setter
+    public void setStatus(String status) {
+        this.status = status;
+    }
     public void setPosition(int _x, int _y, Map m) {
         this.position.setX(_x);
         this.position.setY(_y);
         m.getCell(_x,_y).setEngimon(this);
     }
+    public void setMap(Map _m) { map = _m; }
 
+
+    //Fungsi Tambahan
     public void displayDetail() {
         System.out.println("======================Info Musuh======================");
         System.out.println("Nama           : " + this.name);
@@ -189,27 +168,7 @@ public class WildEngimon extends Engimon implements Serializable {
         System.out.println("Element        : " + this.elements.get(0));
         System.out.println("Level          : " + this.level);
         System.out.println("Cumulative XP  : " + this.cumulativeExperience );
-        // cout << "----------------------------------------------" << endl;
     }
-
-//    public void assertPosition(Map m) {
-//
-//        bool validPosition = false;
-//        int prevX = position.getX();
-//        int prevY = position.getY();
-//
-//        if (m->getCell(position.getX(), position.getY()).getOccupierP().getName() != "" ||
-//                m->getCell(position.getX(), position.getY()).getOccupierE()->getName() != "XXX") {
-//            while (!validPosition) {
-//                Move(m);
-//                if (position.getX() != prevX || position.getY() != prevY) {
-//                    validPosition = true;
-//                }
-//            }
-//        }
-//
-//        m->getCell(position.getX(), position.getY()).setEngimon(this);
-//    }
 
     public void move(Map m) {
         int x = this.position.getX();
@@ -217,35 +176,30 @@ public class WildEngimon extends Engimon implements Serializable {
         Random rand = new Random();
         int upperbound = 4;
         int number = rand.nextInt(upperbound) + 1;
-        // Engimon temp = new WildEngimon();
 
         if (number == 1) {
             if (validPosition(m, x, y + 1)) {
                 m.getCell(x, y).setEngimon(null);
                 this.setPosition(x, y + 1, m);
-
             }
         } else if (number == 2) {
             if (validPosition(m, x, y - 1)) {
                 m.getCell(x, y).setEngimon(null);
                 this.setPosition(x, y - 1, m);
-
             }
         } else if (number == 3) {
             if (validPosition(m, x + 1, y)) {
                 m.getCell(x, y).setEngimon(null);
                 this.setPosition(x + 1, y, m);
-
             }
         } else {
             if (validPosition(m, x - 1, y)) {
                 m.getCell(x, y).setEngimon(null);
                 this.setPosition(x - 1, y, m);
-
             }
         }
-
     }
+
     public Boolean validElementPosition(Map m, int x, int y) {
         Cell cell = m.getCell(x, y);
         String element = this.getElements().get(0);
@@ -281,13 +235,20 @@ public class WildEngimon extends Engimon implements Serializable {
         TimerTask myTask = new TimerTask() {
             @Override
             public void run() {
-                move(map);
+                if (!status.equals("dead")) {
+                    move(map);
+                }
+            }
+        };
+        TimerTask addXpTask = new TimerTask(){
+            @Override
+            public void run(){
+                increaseXP(100);
             }
         };
         timer.schedule(myTask, 0, 5000);
+        timer.schedule(addXpTask,0,30000);
     }
-
-    public void setMap(Map _m) { map = _m; }
 
     //For GUI - Drawing the Engimon
     @Override

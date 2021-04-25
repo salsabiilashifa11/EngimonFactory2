@@ -19,8 +19,7 @@ import java.io.Serializable;
 import java.util.TimerTask;
 
 public class Board extends JPanel implements ActionListener, Serializable {
-
-    //Fields
+    //Atribut
     private transient Timer timer; //to continuously repaint
     private transient java.util.Timer timerLifeCycle; // to kill Engimon
     private transient KListener listener;
@@ -28,19 +27,16 @@ public class Board extends JPanel implements ActionListener, Serializable {
     private Player player;//player
     private ArrayList<WildEngimon> wilds;
 
-    //Constructor
+    //Konstruktor
     public Board() {
-
+        this.setBackground(Color.decode("#f2f2f2"));
         map = new Map();
         player = new Player("Shifa", map);
-
         listener = new KListener();
         addKeyListener(listener);
         setFocusable(true);
-
         timer = new Timer(25, this);
         timer.start();
-
         engimonInit(15);
         TimerTask killEngimon = new TimerTask() {
             @Override
@@ -56,31 +52,40 @@ public class Board extends JPanel implements ActionListener, Serializable {
         TimerTask periodicSpawnEngimon = new TimerTask() {
             @Override
             public void run() {
-                Random rand = new Ran();
-                i
-                wilds.add(engimonSpawn().setLevel(()););
+                Random rand = new Random();
+                int maxLvl = player.getMaxLevelEngimon();
+                int selisih;
+                if (maxLvl <= 30) {
+                    selisih = 30 - maxLvl;
+                } else {
+                    selisih = 0;
+                }
+                int n = rand.nextInt(5) + 1;
+                int lvl = rand.nextInt(selisih) + maxLvl;
+                for (int i = 0; i < n; i++) {
+                    WildEngimon spawn = engimonSpawn();
+                    spawn.setLevel(lvl);
+                    wilds.add(spawn);
+                }
+
             }
         };
         timerLifeCycle = new java.util.Timer();
         timerLifeCycle.schedule(killEngimon,0,15000);
         timerLifeCycle.schedule(periodicSpawnEngimon,0,15000);
-
-
     }
 
-    //Methods
+    //Getter
+    public Map getMap() { return map; }
+    public Player getPlayer() { return player; }
+
+    //Fungsi Tambahan
     public void engimonInit(int N) {
         wilds = new ArrayList<>();
         for (int i = 0; i < N; i++) {
             wilds.add(engimonSpawn());
             WildEngimon spawned = wilds.get(i);
-//            System.out.println(spawned == null);
-            map.getCell(spawned.getPosition().getX(), spawned.getPosition().getY())
-                    .setEngimon(spawned);
-//            System.out.println(spawned.getName());
-//            System.out.println(map.getCell(spawned.getPosition().getX(), spawned.getPosition().getY())
-//                    .getEngimon().getName());
-//            System.out.println(spawned.getPosition().getY());
+            map.getCell(spawned.getPosition().getX(), spawned.getPosition().getY()).setEngimon(spawned);
         }
     }
 
@@ -97,8 +102,8 @@ public class Board extends JPanel implements ActionListener, Serializable {
 
         while (map.getCell(coorX, coorY).getEngimon() != null
                 || map.getCell(coorX, coorY).getPlayer() != null) {
-            coorX = rand.nextInt(upperboundCoordiante);
-            coorY = rand.nextInt(upperboundCoordiante);
+            coorX = rand.nextInt(upperboundCoordiante) + 1  ;
+            coorY = rand.nextInt(upperboundCoordiante) + 1;
         }
         WildEngimon wildEngimon;
         //Generate engimon berdasarkan cell type cell kosong
@@ -129,16 +134,13 @@ public class Board extends JPanel implements ActionListener, Serializable {
                         this.map);
                 break;
             default :
+                System.out.println(cellTypeTujuan.toString());
+                System.out.println("posisi null" + coorX + " ," +coorY);
                 System.out.println("Masuk NULL");
                 wildEngimon = null;
 
         }
-        return wildEngimon;
-    }
-
-    //Aksesor
-    public Map getMap() { return map; }
-    public Player getPlayer() { return player; }
+        return wildEngimon; }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -147,7 +149,6 @@ public class Board extends JPanel implements ActionListener, Serializable {
 
     public void paint(Graphics g) {
         super.paint(g);
-
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 map.getCell(i, j).drawCell(g);
@@ -159,18 +160,14 @@ public class Board extends JPanel implements ActionListener, Serializable {
                         } else {
                             map.getCell(i, j).getEngimon().drawEngimonSmall(g);
                         }
-
                     } else {
                         map.getCell(i, j).getEngimon().drawEngimon(g);
                     }
-
-
                 } else {
                     //System.out.println("ga masuk");
                 }
             }
         }
-
         g.drawImage(player.getPlayerActive(), player.getX(), player.getY(), null);
         if (player.getActiveEngimon() != null) {
             player.getActiveEngimon().drawEngimon(g);
@@ -189,17 +186,55 @@ public class Board extends JPanel implements ActionListener, Serializable {
     private void readObject(ObjectInputStream ois)
             throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
-
         listener = new KListener();
         addKeyListener(listener);
         setFocusable(true);
-
         timer = new Timer(25, this);
         timer.start();
+        TimerTask killEngimon = new TimerTask() {
+            @Override
+            public void run(){
+                for (WildEngimon wildeng: wilds){
+                    if (wildeng.getStatus().equals("dead")){
+                        map.getCell(wildeng.getPosition().getX(),wildeng.getPosition().getY()).setEngimon(null);
+                        wildeng = null;
+                    }
+                }
+            }
+        };
+        TimerTask periodicSpawnEngimon = new TimerTask() {
+            @Override
+            public void run() {
+                Random rand = new Random();
+                int maxLvl = player.getMaxLevelEngimon();
+                int selisih;
+                if (maxLvl <= 30) {
+                    selisih = 30 - maxLvl;
+                } else {
+                    selisih = 0;
+                }
+                int n = rand.nextInt(5) + 1;
+                int lvl = rand.nextInt(selisih) + maxLvl;
+                for (int i = 0; i < n; i++) {
+                    WildEngimon spawn = engimonSpawn();
+                    spawn.setLevel(lvl);
+                    wilds.add(spawn);
+                }
 
-        for (WildEngimon wild : wilds) {
-            wild.setMap(this.map);
-            wild.resumeTimer();
+            }
+        };
+        timerLifeCycle = new java.util.Timer();
+        timerLifeCycle.schedule(killEngimon,0,15000);
+        timerLifeCycle.schedule(periodicSpawnEngimon,0,15000);
+
+        //for (WildEngimon wild : wilds) {
+        //    wild.setMap(this.map);
+        //    wild.resumeTimer();
+        //}
+
+        for (int i = 0; i < wilds.size(); i++) {
+            wilds.get(i).setMap(this.map);
+            wilds.get(i).resumeTimer();
         }
     }
 
