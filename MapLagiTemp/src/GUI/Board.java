@@ -55,10 +55,10 @@ public class Board extends JPanel implements ActionListener, Serializable {
                 Random rand = new Random();
                 int maxLvl = player.getMaxLevelEngimon();
                 int selisih;
-                if (maxLvl <= 30) {
+                if (maxLvl < 30) {
                     selisih = 30 - maxLvl;
                 } else {
-                    selisih = 0;
+                    selisih = 1;
                 }
                 int n = rand.nextInt(5) + 1;
                 int lvl = rand.nextInt(selisih) + maxLvl;
@@ -211,7 +211,7 @@ public class Board extends JPanel implements ActionListener, Serializable {
                 if (maxLvl <= 30) {
                     selisih = 30 - maxLvl;
                 } else {
-                    selisih = 0;
+                    selisih = 1;
                 }
                 int n = rand.nextInt(5) + 1;
                 int lvl = rand.nextInt(selisih) + maxLvl;

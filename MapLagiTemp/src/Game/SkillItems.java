@@ -38,11 +38,11 @@ public class SkillItems implements Inventoryable, Serializable {
 
     public void invDisplay() {
         System.out.println(getName() + " (qty: " + getQuantity() + ")");
-        System.out.println("base power: " + this.item_skill.getBasePower());
-        System.out.print("Elemen: ");
+        System.out.println("      Base power: " + this.item_skill.getBasePower());
+        System.out.print("      Elemen: ");
         System.out.print(this.item_skill.getElement().get(0));
         for (int i = 1; i < this.item_skill.getElement().size(); i++) {
-            System.out.print(", " + this.item_skill.getElement().get(i));
+            System.out.print("| " + this.item_skill.getElement().get(i));
         }
         System.out.println();
     }

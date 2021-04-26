@@ -43,23 +43,23 @@ public class WildEngimon extends Engimon implements Serializable {
 
         if (species.equals("kadal")){
             basePower = 100;
-            masteryLevel = 3;
+            masteryLevel = 1;
         }
         else if (species.equals("ikan")){
             basePower = 110;
-            masteryLevel = 2;
+            masteryLevel = 1;
         }
         else if (species.equals("kambing")){
             basePower = 120;
-            masteryLevel = 4;
+            masteryLevel = 1;
         }
         else if (species.equals("beruang")){
             basePower = 80;
-            masteryLevel = 2;
+            masteryLevel = 1;
         }
         else if (species.equals("kelelawar")){
             basePower = 90;
-            masteryLevel = 5;
+            masteryLevel = 1;
         }
 
         Skill s = new Skill(namaSkill,basePower, masteryLevel);
@@ -154,13 +154,13 @@ public class WildEngimon extends Engimon implements Serializable {
 
     //Fungsi Tambahan
     public void displayDetail() {
-        System.out.println("======================Info Musuh======================");
+        System.out.println("===================Info Musuh==================");
         System.out.println("Nama           : " + this.name);
         System.out.println("Species        : " + this.species);
         System.out.println("Skill          : ");
 
         for (int i = 0; i< this.skills.size(); i++){
-            System.out.println("    " + i+1 + ". ");
+            System.out.println("--->" + i+1 + ". ");
             this.skills.get(i).displaySkill();
             System.out.println();
         }

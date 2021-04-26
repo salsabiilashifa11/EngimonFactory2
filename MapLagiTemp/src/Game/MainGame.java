@@ -86,9 +86,10 @@ public class MainGame implements ActionListener {
                     WildEngimon currentEnemy = (WildEngimon) board.getPlayer().getEnemy().getEngimon();
                     currentEnemy.stopTimer();
                     board.getPlayer().getEnemy().getEngimon().displayDetail();
-                    System.out.println("=========================================");
                     board.getPlayer().getActiveEngimon().calculatePower(board.getPlayer().getEnemy().getEngimon());
-                    System.out.println("Apakah anda ingin melanjutkan battle? [Y/N]");
+                    System.out.print("===============================================");
+                    System.out.println("  Apakah anda ingin melanjutkan battle? [Y/N] ");
+                    System.out.println("===============================================");
                     String confirm = JOptionPane.showInputDialog(board, "Apakah anda ingin melanjutkan battle? [Y/N]");
                     if (confirm.equals("y") || confirm.equals("Y")){
                         Boolean menang = board.getPlayer().battle(board.getPlayer().getEnemy().getEngimon());
@@ -133,12 +134,16 @@ public class MainGame implements ActionListener {
                 System.out.println("Nama abi : " + Abi);
                 //System.out.println("Masukkan nama Mami : ");
                 String Mami = JOptionPane.showInputDialog(board, "Masukkan nama Mami : ");
+                while (Mami.equals(Abi)) {
+                    System.out.println("Masa berkembang biak sama diri sendiri sih");
+                    Mami = JOptionPane.showInputDialog(board, "Masukkan nama Mami : ");
+                }
                 System.out.println("Nama mami : " + Mami);
                 //System.out.println("Masukkan nama Anak : ");
-                String namaAnak = JOptionPane.showInputDialog(board, "Masukkan nama Anak : ");;
+                String namaAnak = JOptionPane.showInputDialog(board, "Masukkan nama Anak : ");
                 System.out.println("Nama anak : " + namaAnak);
                 board.getPlayer().breed(board.getPlayer().getPlayerEngimons().get(board.getPlayer().getPlayerEngimons().indexByName(Abi)), board.getPlayer().getPlayerEngimons().get(board.getPlayer().getPlayerEngimons().indexByName(Mami)), namaAnak);
-                System.out.println("Berhasil melakukan breed");
+
             }
             else{
                 System.out.println("Gabisa breed");
@@ -193,11 +198,11 @@ public class MainGame implements ActionListener {
                 String siName = JOptionPane.showInputDialog(board, "Masukkan nama skill item yang ingin dibuang:");
                 try {
                     int idxSkillItem = board.getPlayer().getPlayerItems().indexByName(siName);
-                    int siQty = Integer.parseInt(JOptionPane.showInputDialog(board, "Masukkan nama skill item yang ingin dibuang:"));
+                    int siQty = Integer.parseInt(JOptionPane.showInputDialog(board, "Masukkan jumlah skill item yang ingin dibuang:"));
                     if (siQty > board.getPlayer().getPlayerItems().get(idxSkillItem).getQuantity()) {
                         System.out.println("Bisa ngitung ga sih mas. Jumlahnya kelebihan!!!");
                     } else {
-                        for (int i = 1; i < siQty; i++) {
+                        for (int i = 1; i <= siQty; i++) {
                             board.getPlayer().getPlayerItems().deleteAt(idxSkillItem);
                         }
                     }

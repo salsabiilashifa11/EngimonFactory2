@@ -125,7 +125,7 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
     }
 
     public void displayDetail(){
-        System.out.println("=====================Info Engimon=====================");
+        System.out.println("================Info Engimon==================");
         System.out.println("Nama                   : " + this.name);
         System.out.println("Species                : " + this.species);
         System.out.println("Skill                  : ");
@@ -136,9 +136,9 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
             System.out.println();
         }
         System.out.println("Element                : ");
-        for (int i = 0; i< this.elements.size(); i++){
+        for (int i = 0; i < this.elements.size(); i++){
                 if (i != this.elements.size() - 1){
-                System.out.print(" | ");
+                    System.out.print((i+1)+". "+ this.elements.get(i) +" | ");
                 }
                 else{
                     System.out.println((i+1) + ". " + this.elements.get(i));
@@ -152,7 +152,7 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         System.out.println("Abi                    : " + ((this.getParentName().size() == 0) ? "N/A" :this.getParentName().get(0)));
         System.out.println("Mami                   : " + ((this.getParentName().size() == 0) ? "N/A" :this.getParentName().get(1)));
         System.out.println("Status                 : " + this.getStatus());
-        System.out.println("=======================================================");
+        System.out.println("===============================================");
 
     }
 
@@ -168,7 +168,7 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         for (int i = 0; i < enemy.getNSkill(); i++) {
             enemyPower += enemy.getSkill().get(i).getBasePower() * enemy.getSkill().get(i).getMasteryLevel();
         }
-        System.out.println("======================Info Battle======================");
+        System.out.print("==================Info Battle==================");
         System.out.println("My Power       : " + myPower);
         System.out.println("Enemy Power    : " + enemyPower);
     }
@@ -220,9 +220,9 @@ public class OwnedEngimon extends Engimon implements Inventoryable, Serializable
         //Loading active engimon sprites
         ImageIcon img = new ImageIcon("assets/OwnedFront.png");
         activeFront = img.getImage();
-        img = new ImageIcon("/Users/shifa/Desktop/MapLagiTemp/assets/OwnedLeft.png");
+        img = new ImageIcon("assets/OwnedLeft.png");
         activeLeft = img.getImage();
-        img = new ImageIcon("/Users/shifa/Desktop/MapLagiTemp/assets/OwnedRight.png");
+        img = new ImageIcon("assets/OwnedRight.png");
         activeRight = img.getImage();
         img = new ImageIcon("assets/OwnedBack.png");
         activeBack = img.getImage();

@@ -204,8 +204,12 @@ public class Player implements Serializable {
 
     public void breed(OwnedEngimon father, OwnedEngimon mother, String anak) {
         //Validasi level parents
-        if (father.getLevel() < 4 && mother.getLevel() < 4) {
+        if (father.getLevel() < 4 || mother.getLevel() < 4) {
             System.out.println("Belom cukup umur");
+            return;
+        }
+        else if (this.isEngimonNameExist(anak)){
+            System.out.println("Nama anak sudah terdaftar");
             return;
         }
 
@@ -306,6 +310,7 @@ public class Player implements Serializable {
         }
 
         this.playerEngimons.append(child);
+        System.out.println("Berhasil melakukan breed");
     }
 
     private Boolean isDuplicateSkill(ArrayList<Skill> containerSkill, String skillName){
@@ -436,7 +441,13 @@ public class Player implements Serializable {
     }
 
     public Boolean teachAble(String skillName, String eName) {
-        Skill newSkill = playerItems.get(playerItems.indexByName(skillName)).getSkill();
+        Skill newSkill;
+        try {
+            newSkill = playerItems.get(playerItems.indexByName(skillName)).getSkill();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Gapunya skill yang namanya " + skillName);
+            return false;
+        }
         boolean kompatibel = false;
 
         for (int i = 0; i < playerEngimons.get(playerEngimons.indexByName(eName)).getNSkill(); i++) {
@@ -469,7 +480,13 @@ public class Player implements Serializable {
     }
 
     public void displayEngimon(String _name){
-        playerEngimons.get(playerEngimons.indexByName(_name)).displayDetail();
+        try {
+            playerEngimons.get(playerEngimons.indexByName(_name)).displayDetail();
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Gapunya engimon dengan nama "+ _name);
+        }
+
     }
 
 
@@ -608,17 +625,17 @@ public class Player implements Serializable {
 
     public void initiateSkill() {
         //Inventory Skill Item
-        Skill s1 = new Skill("libasan ekor keadilan",100,1);
+        Skill s1 = new Skill("Pesanan es teh manis",100,1);
         s1.addElementSkill("ice");
         //Skill s2 = new Skill("Tatapan dingin mantan",100,1);
         //s2.addElementSkill("ice");
-        Skill s3 = new Skill("serudukan tanduk keputusasaan",100,1);
+        Skill s3 = new Skill("Kekuatan kencing di dalam celana",100,1);
         s3.addElementSkill("water");
-        Skill s4 = new Skill("tembakan gelembung kebebasan",100,1);
+        Skill s4 = new Skill("Seruputan rokok sampoerna",100,1);
         s4.addElementSkill("fire");
-        Skill s5 = new Skill("teriakan ultrasonic kemarahan",100,1);
+        Skill s5 = new Skill("Stone Holder",100,1);
         s5.addElementSkill("ground");
-        Skill s6 = new Skill("cakaran cakar kematian",100,1);
+        Skill s6 = new Skill("PLN mati lampu",100,1);
         s6.addElementSkill("electric");
         SkillItems sk1 = new SkillItems(s1,1);
         //SkillItems sk2 = new SkillItems(s2,1);
@@ -675,5 +692,15 @@ public class Player implements Serializable {
            }
         }
         return max;
+    }
+
+    public boolean isEngimonNameExist(String inputName){
+        boolean exist = false;
+        for (int i=0;i<this.getPlayerEngimons().n_elmt();i++){
+            if (inputName.equals(this.getPlayerEngimons().get(i).getName())){
+                exist = true;
+            }
+        }
+        return exist;
     }
 }

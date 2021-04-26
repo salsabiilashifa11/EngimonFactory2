@@ -97,7 +97,7 @@ public class    Skill implements Serializable {
         System.out.println("NamaSKill       : " + this.skillName);
         System.out.println("Basepower       : " + this.basePower);
         System.out.println("MasteryLevel    : " + this.masteryLevel);
-        System.out.println("Elements        : ");
+        System.out.print("Elements        : ");
         for (int i = 0; i < this.elements.size(); i++) {
             if (i == this.elements.size() - 1) {
                 System.out.println(this.elements.get(i));
