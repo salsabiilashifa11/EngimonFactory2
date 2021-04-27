@@ -12,3 +12,8 @@
 2. Untuk melihat daftar command yang tersedia, pemain dapat mengetikkan help pada input field kemudian klik tombol "Enter" pada layar permainan.
 3. Apabila muncul layar pop - up, harus memasukkan input walaupun tidak sesuai kemudian klik ok.
 4. Untuk command load dan save, nama file harus diakhiri dengan ".txt"
+
+## Screenshot
+![alt text](ss/1.png)
+![alt text](ss/2.png)
+![alt text](ss/3.png)
